@@ -1,0 +1,921 @@
+<div class="col-lg-9" styl>
+    <!-- Subject Attendance Section -->
+    <div class="card mt-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0" style="color: rgb(48, 57, 114);">Subject Attendance</h5>
+            <!-- Real-time connection status -->
+            <div id="connectionStatus" class="connection-badge disconnected">
+                <span class="status-dot"></span>
+                <span class="status-text">Connecting...</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <!-- Filter Form -->
+            <form class="row g-3 mb-4 ">
+                <div class="col-md-3">
+                    <label class="form-label">Name Group</label>
+                    <div type="text" class="form-control form2" id="name_group_label"></div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Teacher Name</label>
+                    <div type="text" class="form-control form2" id="teacher_name"></div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Name Subject</label>
+                    <div type="text" class="form-control form2" id="subject_name"></div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Room Name</label>
+                   <div type="text" class="form-control form2" id="room_name"></div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Student</label>
+                    <input type="text" class="form-control" id="studentSearch" placeholder="Search by Student ID or Name" style="border-color: #DDDDDD;">
+                </div>
+                <div class="col-md-6 d-flex justify-content-between align-items-center" style="padding-top: 20px;">
+                    <!-- Left-aligned button -->
+                    <button type="button" class="btn custom-btn" onclick="filterStudents()" style="background-color: rgb(90, 71, 207); color: white;">
+                        <i class="bi bi-search"></i> Search
+                    </button>
+                <style>
+
+                .custom-btn:hover {
+                   opacity: 0.8;
+                    border-color: #5A4FCF;
+
+                }
+                </style>
+                    <!-- Right-aligned button -->
+                    <button
+                            type="button" class="btn custom-btn"
+                            style="background-color: rgb(90, 71, 207);
+                             color: white;"
+                             data-bs-toggle="modal" data-bs-target="#model-add-student">
+                        <i class="bi bi-person-plus"></i> Add student
+                    </button>
+                </div>
+            </form>
+
+            <!-- Attendance Table -->
+            <div class="table-responsive">
+                <table id="attendanceTable">
+                    <thead style="color: #4D44B5;">
+                        <tr>
+                            <th>ID</th>
+                            <th>User Name</th>
+                            <th>Status</th>
+                            <th>Note</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendanceBody">
+                        <!-- Dynamic rows will go here -->
+                    </tbody>
+                </table>
+            </div>
+            <!-- Pagination Controls -->
+            <div class="pagination-container d-flex justify-content-center align-items-center mt-3">
+                <nav aria-label="Table pagination">
+                    <ul class="pagination pagination-custom mb-0" id="paginationNav">
+                        <!-- Previous Button -->
+                        <li class="page-item" id="prevPageItem">
+                            <a class="page-link pagination-link" href="#" onclick="changePage(currentPage - 1)">
+                                <i class="bi bi-chevron-left"></i> Previous
+                            </a>
+                        </li>
+                        <!-- Page numbers will be inserted here -->
+                        <!-- Next Button -->
+                        <li class="page-item" id="nextPageItem">
+                            <a class="page-link pagination-link" href="#" onclick="changePage(currentPage + 1)">
+                                Next <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Loading indicator -->
+            <div id="loadingIndicator" class="loading" style="display: none;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p>Loading attendance data...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Real-time update notifications -->
+<div id="updateToast" class="toast-container position-fixed top-0 end-0 p-3">
+    <div id="updateNotification" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Real-time Update</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="toastMessage">
+            <!-- Dynamic message -->
+        </div>
+    </div>
+</div>
+
+<!-- Add student modal -->
+<div class="modal fade" id="model-add-student" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="">Add Student</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Add your student form here -->
+          <form>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="inputEmail4">Email</label>
+                  <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="inputPassword4">Password</label>
+                  <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputAddress">Address</label>
+                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+              </div>
+              <div class="form-group">
+                <label for="inputAddress2">Address 2</label>
+                <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="inputCity">City</label>
+                  <input type="text" class="form-control" id="inputCity">
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="inputState">State</label>
+                  <select id="inputState" class="form-control">
+                    <option selected>Choose...</option>
+                    <option>...</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-2">
+                  <label for="inputZip">Zip</label>
+                  <input type="text" class="form-control" id="inputZip">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="gridCheck">
+                  <label class="form-check-label" for="gridCheck">
+                    Check me out
+                  </label>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Sign in</button>
+            </form>
+
+        <p>Student addition form goes here...</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Include Socket.IO -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+
+<script>
+    // Global variables
+    let socket;
+    let attendanceData = [];
+    let filteredData = [];
+    let sessionId = '{{ session_info.id }}';
+    let tabletId = '{{ tablet_id }}';
+
+    // Initialize Socket.IO connection
+    function initializeSocket() {
+        socket = io();
+
+        socket.on('connect', function() {
+            console.log('Connected to server');
+            updateConnectionStatus(true);
+            // Join the session room
+            socket.emit('join_session', {
+                session_id: sessionId,
+                tablet_id: tabletId
+            });
+        });
+
+        socket.on('disconnect', function() {
+            console.log('Disconnected from server');
+            updateConnectionStatus(false);
+        });
+
+        // Real-time attendance updates
+        socket.on('attendance_update', function(data) {
+            if (data.session_id === sessionId) {
+                console.log('Attendance update received:', data);
+                attendanceData = data.attendance;
+                renderAttendanceTable();
+                showNotification('Attendance data updated!', 'success');
+            }
+        });
+
+        // Real-time status updates
+        socket.on('status_update', function(data) {
+            console.log('Status update received:', data);
+            updateStudentStatusInTable(data.attendance_id, data.new_status);
+            showNotification('Student status updated!', 'info');
+        });
+
+        // Real-time note updates
+        socket.on('note_update', function(data) {
+            console.log('Note update received:', data);
+            updateStudentNoteInTable(data.user_id, data.note);
+            showNotification('Note added!', 'info');
+        });
+    }
+
+    // Update connection status
+    function updateConnectionStatus(connected) {
+        const statusElement = document.getElementById('connectionStatus');
+        const statusText = statusElement.querySelector('.status-text');
+
+        if (connected) {
+            statusElement.classList.remove('disconnected');
+            statusElement.classList.add('connected');
+            statusText.textContent = 'Connected';
+        } else {
+            statusElement.classList.remove('connected');
+            statusElement.classList.add('disconnected');
+            statusText.textContent = 'Disconnected';
+        }
+    }
+
+    // Show notification toast
+    function showNotification(message, type = 'info') {
+        const toastElement = document.getElementById('updateNotification');
+        const messageElement = document.getElementById('toastMessage');
+
+        messageElement.textContent = message;
+        toastElement.classList.remove('bg-success', 'bg-info', 'bg-warning');
+
+        switch(type) {
+            case 'success':
+                toastElement.classList.add('bg-success', 'text-white');
+                break;
+            case 'info':
+                toastElement.classList.add('bg-info', 'text-white');
+                break;
+            case 'warning':
+                toastElement.classList.add('bg-warning');
+                break;
+        }
+
+        const toast = new bootstrap.Toast(toastElement);
+        toast.show();
+    }
+
+    function loadcalender(sessionId) {
+        fetch(`/attendance/${sessionId}`)
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error("Failed to load session data");
+                }
+                return res.json();
+            })
+            .then(data => {
+                console.log("Session Data:", data);
+                document.getElementById('name_group_label').innerHTML = data.name || 'N/A';
+                document.getElementById('teacher_name').innerHTML = data.teacherFullName || 'N/A';
+                document.getElementById('room_name').innerHTML = data.roomName || 'N/A';
+                document.getElementById('subject_name').innerHTML = data.subject || 'N/A';
+            })
+            .catch(err => {
+                console.error("Error loading session data:", err);
+                showNotification('Error loading session data', 'warning');
+            });
+    }
+
+    function loadAttendance(sessionId) {
+        showLoadingIndicator(true);
+
+        fetch(`/calender/${sessionId}`)
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                return res.json();
+            })
+            .then(data => {
+                attendanceData = data || [];
+                renderAttendanceTable();
+                showLoadingIndicator(false);
+            })
+            .catch(err => {
+                console.error("Error loading attendance:", err);
+                showLoadingIndicator(false);
+                showNotification('Error loading attendance data', 'warning');
+                const tbody = document.getElementById('attendanceBody');
+                tbody.innerHTML = "<tr><td colspan='5'>Error loading attendance data</td></tr>";
+            });
+    }
+
+    function renderAttendanceTable() {
+        const tbody = document.getElementById('attendanceBody');
+        tbody.innerHTML = ""; // Clear old rows
+
+        const dataToRender = filteredData.length > 0 ? filteredData : attendanceData;
+
+        if (!dataToRender || dataToRender.length === 0) {
+            tbody.innerHTML = "<tr><td colspan='5'>No attendance data found</td></tr>";
+            return;
+        }
+
+        dataToRender.forEach(item => {
+            const statusClass = item.isPresent ? "status-present" : "status-absent";
+            const statusText = item.isPresent ? "Present" : "Absent";
+            const note = item.note ? item.note : "N/A";
+
+            const row = document.createElement('tr');
+            row.setAttribute('data-attendance-id', item.id);
+            row.innerHTML = `
+                <td>${item.userId}</td>
+                <td>${item.userName}</td>
+                <td><div class="status ${statusClass}">${statusText}</div></td>
+                <td><div class="note-content">${note}</div></td>
+                <td class="buttonss">
+                    <button class="btn btn-present ${item.isPresent ? 'btn-secondary' : 'btn-success'}"
+                            onclick="markPresent(${item.id})"
+                            ${item.isPresent ? 'disabled' : ''}>
+                        ${item.isPresent ? 'Already Present' : 'Mark as Present'}
+                    </button>
+                    <button class="btn btn-note btn-info" onclick="addNote(${item.userId}, ${item.id})">Add Note</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    // Update student status in real-time without full reload
+    function updateStudentStatusInTable(attendanceId, newStatus) {
+        // Update in data array
+        const studentIndex = attendanceData.findIndex(s => s.id === attendanceId);
+        if (studentIndex !== -1) {
+            attendanceData[studentIndex].isPresent = newStatus;
+        }
+
+        // Update in DOM
+        const row = document.querySelector(`tr[data-attendance-id="${attendanceId}"]`);
+        if (row) {
+            const statusCell = row.querySelector('.status');
+            const button = row.querySelector('.btn-present');
+
+            if (newStatus) {
+                statusCell.className = 'status status-present';
+                statusCell.textContent = 'Present';
+                button.className = 'btn btn-present btn-secondary';
+                button.textContent = 'Already Present';
+                button.disabled = true;
+            } else {
+                statusCell.className = 'status status-absent';
+                statusCell.textContent = 'Absent';
+                button.className = 'btn btn-present btn-success';
+                button.textContent = 'Mark as Present';
+                button.disabled = false;
+            }
+        }
+    }
+
+    // Update student note in real-time
+    function updateStudentNoteInTable(userId, note) {
+        // Update in data array
+        const studentIndex = attendanceData.findIndex(s => s.userId === userId);
+        if (studentIndex !== -1) {
+            attendanceData[studentIndex].note = note;
+        }
+
+        // Update in DOM - find by userId in the first column
+        const rows = document.querySelectorAll('#attendanceBody tr');
+        rows.forEach(row => {
+            const idCell = row.querySelector('td:first-child');
+            if (idCell && idCell.textContent == userId) {
+                const noteCell = row.querySelector('.note-content');
+                if (noteCell) {
+                    noteCell.textContent = note || 'N/A';
+                }
+            }
+        });
+    }
+
+    function markPresent(id) {
+        console.log('Marking present:', id);
+        showLoadingIndicator(true);
+
+        fetch(`/change-stutatus/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                session_id: sessionId
+            })
+        })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+            return res.json();
+        })
+        .then(data => {
+            showLoadingIndicator(false);
+            if (data.status === "success") {
+                showNotification(`Student marked as present successfully!`, 'success');
+                // The real-time update will handle the UI update
+            } else {
+                showNotification(`Failed to mark student present: ${data.message || 'Unknown error'}`, 'warning');
+            }
+        })
+        .catch(err => {
+            console.error("Error marking present:", err);
+            showLoadingIndicator(false);
+            showNotification("An error occurred while marking present.", 'warning');
+        });
+    }
+
+    function addNote(studentId, attendanceId) {
+        const note = prompt("Enter a note for this student:");
+        if (note && note.trim()) {
+            fetch(`/add-note/${studentId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    note: note.trim(),
+                    session_id: sessionId
+                })
+            })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (data.status === "success") {
+                    showNotification("Note added successfully!", 'success');
+                    // The real-time update will handle the UI update
+                } else {
+                    showNotification(`Failed to add note: ${data.message || 'Unknown error'}`, 'warning');
+                }
+            })
+            .catch(err => {
+                console.error("Error adding note:", err);
+                showNotification("An error occurred while adding note.", 'warning');
+            });
+        }
+    }
+
+    // Search/filter functionality
+    function filterStudents() {
+        const searchTerm = document.getElementById('studentSearch').value.toLowerCase().trim();
+        console.log(searchTerm);
+        if (!searchTerm) {
+            filteredData = [];
+            renderAttendanceTable();
+            return;
+        }
+
+        filteredData = attendanceData.filter(student => {
+            const userName = student.userName.toLowerCase();
+            const userId = student.userId.toString().toLowerCase();
+            return userName.includes(searchTerm) || userId.includes(searchTerm);
+        });
+
+        renderAttendanceTable();
+    }
+
+    // Real-time search as user types
+    document.addEventListener('DOMContentLoaded', () => {
+        const searchInput = document.getElementById('studentSearch');
+        searchInput.addEventListener('input', filterStudents);
+    });
+
+    function showLoadingIndicator(show) {
+        const loadingElement = document.getElementById('loadingIndicator');
+        loadingElement.style.display = show ? 'block' : 'none';
+    }
+
+    // Initialize everything when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log("Session ID:", sessionId);
+
+        if (sessionId) {
+            // Initialize real-time connection
+            initializeSocket();
+
+            // Load initial data
+            loadAttendance(sessionId);
+            loadcalender(sessionId);
+
+            // Set up periodic refresh as backup (every 2 minutes)
+            setInterval(() => {
+                if (!socket || !socket.connected) {
+                    console.log('Socket disconnected, falling back to polling');
+                    loadAttendance(sessionId);
+                }
+            }, 120000);
+        } else {
+            console.error("No session ID found");
+            showNotification('No session ID found', 'warning');
+        }
+    });
+
+    // Set global variables for template
+    window.sessionId = '{{ session_info.id }}';
+    window.sessionInfo = {
+        id: '{{ session_info.id }}',
+        roomId: '{{ session_info.roomId }}',
+        start: "{{ session_info.start }}",
+        end: "{{ session_info.end }}",
+        subject: "{{ session_info.subject if session_info.subject else '' }}"
+    };
+</script>
+
+<style>
+    .form2 {
+        background-color: #f8f9fa;
+        font-weight: 500;
+        color: rgb(137, 135, 159);
+    }
+
+    .status-present {
+        background-color: #d4edda;
+        color: #155724;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: 500;
+        font-size: 13px;
+    }
+
+    .status-absent {
+        background-color: rgb(253, 83, 83);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: 500;
+        font-size: 13px;
+    }
+
+    .note-content {
+        color: rgb(137, 135, 159);
+        font-style: italic;
+    }
+
+    #attendanceTable {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    #attendanceTable th,
+    #attendanceTable td {
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    #attendanceTable th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+    }
+
+    #attendanceTable td {
+        color: rgb(137, 135, 159);
+    }
+
+    .btn-present {
+        margin-right: 5px;
+    }
+
+    .btn-note {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+        color: white;
+    }
+
+    .loading {
+        text-align: center;
+        padding: 20px;
+        color: #6c757d;
+    }
+
+    /* Real-time connection status styles */
+    .connection-badge {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .connection-badge.connected {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .connection-badge.disconnected {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: 6px;
+        animation: pulse 2s infinite;
+    }
+
+    .connected .status-dot {
+        background-color: #28a745;
+    }
+
+    .disconnected .status-dot {
+        background-color: #dc3545;
+    }
+
+    @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.5; }
+        100% { opacity: 1; }
+    }
+
+    /* Toast positioning */
+    .toast-container {
+        z-index: 1050;
+    }
+
+    /* Updated row styles for real-time updates */
+    #attendanceBody tr {
+        transition: background-color 0.3s ease;
+    }
+
+    #attendanceBody tr.updated {
+        background-color: #fff3cd;
+        animation: highlight 2s ease-out;
+    }
+
+    @keyframes highlight {
+        0% { background-color: #fff3cd; }
+        100% { background-color: transparent; }
+    }
+
+    /* Improved button states */
+    .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .btn-present:disabled {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+</style>
+
+
+<!-- ADD THESE PAGINATION VARIABLES to your existing JavaScript (add at the top with other global variables) -->
+<script>
+    let absent_students = 0;
+    let present_students = 0;
+
+
+    // ADD these pagination variables with your existing global variables
+    let currentPage = 1;
+    let entriesPerPage = 8;
+    let totalPages = 1;
+
+    // REPLACE your existing renderAttendanceTable() function with this one
+    function renderAttendanceTable() {
+        const tbody = document.getElementById('attendanceBody');
+        tbody.innerHTML = ""; // Clear old rows
+
+        const dataToRender = filteredData.length > 0 ? filteredData : attendanceData;
+
+        if (!dataToRender || dataToRender.length === 0) {
+            tbody.innerHTML = "<tr><td colspan='5'>No attendance data found</td></tr>";
+            document.getElementById('paginationNav').style.display = 'none';
+            return;
+        }
+
+        // Calculate pagination
+        totalPages = Math.ceil(dataToRender.length / entriesPerPage);
+        if (currentPage > totalPages) {
+            currentPage = Math.max(1, totalPages);
+        }
+
+        const startIndex = (currentPage - 1) * entriesPerPage;
+        const endIndex = Math.min(startIndex + entriesPerPage, dataToRender.length);
+        const pageData = dataToRender.slice(startIndex, endIndex);
+
+        // Render table rows for current page
+        pageData.forEach(item => {
+            const statusClass = item.isPresent ? "status-present" : "status-absent";
+            const statusText = item.isPresent ? "Present" : "Absent";
+            const note = item.note ? item.note : "N/A";
+
+            if (item.isPresent) {
+                present_students++;
+            } else {
+                absent_students++;
+            }
+
+
+
+
+            const row = document.createElement('tr');
+            row.setAttribute('data-attendance-id', item.id);
+            row.innerHTML = `
+                <td>${item.userId}</td>
+                <td>${item.userName}</td>
+                <td><div class="status ${statusClass}">${statusText}</div></td>
+                <td><div class="note-content">${note}</div></td>
+                <td class="buttonss">
+                    <button class="btn btn-present ${item.isPresent ? 'btn-secondary' : 'btn-success'}"
+                            onclick="markPresent(${item.id})"
+                            ${item.isPresent ? 'disabled' : ''}>
+                        ${item.isPresent ? 'Already Present' : 'Mark as Present'}
+                    </button>
+                    <button class="btn btn-note btn-info" onclick="addNote(${item.userId}, ${item.id})">Add Note</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+
+
+        // Update pagination controls
+        renderPaginationControls();
+    }
+    document.getElementById("model-stat").addEventListener("shown.bs.modal", function () {
+        showAttendanceChart(present_students, absent_students);
+    });
+
+    // UPDATE your existing filterStudents() function - add currentPage = 1; line
+    function filterStudents() {
+        const searchTerm = document.getElementById('studentSearch').value.toLowerCase().trim();
+        
+        if (!searchTerm) {
+            filteredData = [];
+        } else {
+            filteredData = attendanceData.filter(student => {
+                const userName = student.userName.toLowerCase();
+                const userId = student.userId.toString().toLowerCase();
+                
+                return userName.includes(searchTerm) || userId.includes(searchTerm);
+            });
+        }
+
+        currentPage = 1; // ADD THIS LINE - Reset to first page when filtering
+        renderAttendanceTable();
+    }
+
+    // ADD these new pagination functions
+    function renderPaginationControls() {
+        const paginationNav = document.getElementById('paginationNav');
+
+        if (totalPages <= 1) {
+            paginationNav.style.display = 'none';
+            return;
+        }
+
+        paginationNav.style.display = 'flex';
+
+        // Update Previous button
+        const prevItem = document.getElementById('prevPageItem');
+        if (currentPage === 1) {
+            prevItem.classList.add('disabled');
+            prevItem.querySelector('a').setAttribute('tabindex', '-1');
+        } else {
+            prevItem.classList.remove('disabled');
+            prevItem.querySelector('a').removeAttribute('tabindex');
+        }
+
+        // Update Next button
+        const nextItem = document.getElementById('nextPageItem');
+        if (currentPage === totalPages) {
+            nextItem.classList.add('disabled');
+            nextItem.querySelector('a').setAttribute('tabindex', '-1');
+        } else {
+            nextItem.classList.remove('disabled');
+            nextItem.querySelector('a').removeAttribute('tabindex');
+        }
+
+        // Remove existing page numbers
+        const existingPages = paginationNav.querySelectorAll('.page-number');
+        existingPages.forEach(page => page.remove());
+
+        // Add page numbers between Previous and Next buttons
+        for (let i = 1; i <= totalPages; i++) {
+            const pageItem = document.createElement('li');
+            pageItem.className = `page-item page-number ${i === currentPage ? 'active' : ''}`;
+            pageItem.innerHTML = `<a class="page-link pagination-link" href="#" onclick="changePage(${i})">${i}</a>`;
+
+            // Insert before Next button
+            nextItem.parentNode.insertBefore(pageItem, nextItem);
+        }
+    }
+
+    function changePage(page) {
+        if (page >= 1 && page <= totalPages && page !== currentPage) {
+            currentPage = page;
+            renderAttendanceTable();
+        }
+    }
+</script>
+
+<!-- ADD THESE PAGINATION STYLES to your existing <style> section -->
+<style>
+    /* Pagination Styles - ADD THESE */
+    .pagination-container {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        border: 1px solid #e9ecef;
+        margin-top: 20px;
+    }
+
+    .pagination-custom {
+        gap: 5px;
+        justify-content: center;
+    }
+
+    .pagination-custom .page-item .page-link {
+        border: 1px solid #3D3690;
+        color: #3D3690;
+        background-color: white;
+        padding: 10px 15px;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        min-width: 45px;
+        text-align: center;
+    }
+
+    .pagination-custom .page-item .page-link:hover {
+        background-color: #3D3690;
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(61, 54, 144, 0.2);
+    }
+
+    .pagination-custom .page-item.active .page-link {
+        background-color: #3D3690;
+        border-color: #3D3690;
+        color: white;
+        box-shadow: 0 2px 4px rgba(61, 54, 144, 0.3);
+    }
+
+    .pagination-custom .page-item.disabled .page-link {
+        color: rgb(137, 135, 159);
+        background-color: #f8f9fa;
+        border-color: #e9ecef;
+        cursor: not-allowed;
+    }
+
+    .pagination-custom .page-item.disabled .page-link:hover {
+        background-color: #f8f9fa;
+        color: rgb(137, 135, 159);
+        transform: none;
+        box-shadow: none;
+    }
+
+    /* Responsive pagination */
+    @media (max-width: 768px) {
+        .pagination-custom .page-item .page-link {
+            padding: 8px 12px;
+            min-width: 40px;
+            font-size: 14px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .pagination-custom .page-item .page-link {
+            padding: 6px 10px;
+            min-width: 35px;
+            font-size: 13px;
+        }
+
+        .pagination-custom {
+            gap: 3px;
+        }
+    }
+</style>

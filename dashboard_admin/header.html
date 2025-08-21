@@ -1,0 +1,251 @@
+ <header class="header">
+
+    <div class="header-left">
+             <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Toggle navigation">
+         <i class="fas fa-bars"></i>
+     </button>
+        <h2>Server Management</h2>
+    </div>
+    <div class="header-right">
+
+        <div class="notifications">
+          <button class="notification-btn" id="notificationBtn" aria-label="Notifications">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge" id="notificationCount">3</span>
+          </button>
+          <ul class="notification-list" id="notificationList">
+            <li>Notification 1</li>
+            <li>Notification 2</li>
+            <li>Notification 3</li>
+          </ul>
+        </div>
+        <div class="user-profile" onclick="toggleDropdown()">
+          <img src="../static/assets/images/0f7404a036c45f63e6c7460634f016f8.png" alt="User" class="user-avatar" style="background-color: transparent;">
+          <span class="user-name">{{user}}</span>
+          <i class="fas fa-chevron-down"></i>
+
+          <div class="dropdown-menu" id="profileDropdown">
+            <a href="/logout">Déconnexion</a>
+          </div>
+        </div>
+    </div>
+</header>
+
+<style>
+    .user-name{
+        color:#4D44B5;
+    }
+
+    header i{
+        color:#4D44B5;
+    }
+
+  .header {
+    color:#303972;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #e2e8f0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+  }
+  .sidebar-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #64748b;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    transition: background 0.2s;
+    margin-left: auto;
+  }
+  .sidebar-toggle:hover {
+    background-color: #f1f5f9;
+  }
+  .notifications {
+   order:1;
+  }
+
+  @media (max-width: 768px) {
+    .sidebar-toggle {
+      display: block;
+      position: static;
+    }
+
+    h1{
+        font-size: 14px;
+    }
+    .header-right {
+      flex-direction: row-reverse;
+    }
+  }
+  .notifications {
+    position: relative;
+    display: inline-block;
+    order: initial;
+    
+  }
+  .notification-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    font-size: 24px;
+  }
+  .notification-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  .notification-list {
+    display: none;
+    position: absolute;
+    top: 36px;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    width: 250px;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 100;
+  }
+  .notification-list.active {
+    display: block;
+  }
+  .notification-list li {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+  }
+  .notification-list li:last-child {
+    border-bottom: none;
+  }
+
+
+    .user-profile {
+      position: relative;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+    }
+
+    .user-profile:hover {
+      background-color: #f1f5f9;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: white;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      border-radius: 6px;
+      display: none;
+      flex-direction: column;
+      min-width: 150px;
+      z-index: 100;
+    }
+
+    .dropdown-menu a {
+      padding: 10px;
+      color: #334155;
+      text-decoration: none;
+      display: block;
+      transition: background 0.2s;
+    }
+
+    .dropdown-menu a:hover {
+      background-color: #f1f5f9;
+    }
+
+</style>
+
+<script>
+  const btn = document.getElementById('notificationBtn');
+  const list = document.getElementById('notificationList');
+  const count = document.getElementById('notificationCount');
+
+  // Toggle notification list visibility on button click
+  btn.addEventListener('click', () => {
+    list.classList.toggle('active');
+  });
+
+  // Close notification list when clicking outside
+  document.addEventListener('click', (event) => {
+    if (!btn.contains(event.target) && !list.contains(event.target)) {
+      list.classList.remove('active');
+    }
+  });
+
+  // Example: dynamically update notification count and list
+  function updateNotifications(notifications) {
+    count.innerText = notifications.length;
+    count.style.display = notifications.length ? 'inline-block' : 'none';
+
+    list.innerHTML = ''; // clear current notifications
+
+    if(notifications.length === 0){
+      const emptyItem = document.createElement('li');
+      emptyItem.textContent = 'No notifications';
+      list.appendChild(emptyItem);
+      return;
+    }
+
+    notifications.forEach(notif => {
+      const li = document.createElement('li');
+      li.textContent = notif;
+      list.appendChild(li);
+    });
+  }
+
+  // Example usage (replace with your own notifications fetch)
+  const exampleNotifications = [
+    "Server is down!",
+    "New user logged in",
+    "Backup completed"
+  ];
+  updateNotifications(exampleNotifications);
+
+
+    function toggleDropdown() {
+    const dropdown = document.getElementById("profileDropdown");
+    dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+  }
+
+  // Optional: Close the dropdown when clicking outside
+  document.addEventListener("click", function(event) {
+    const profile = document.querySelector(".user-profile");
+    const dropdown = document.getElementById("profileDropdown");
+    if (!profile.contains(event.target)) {
+      dropdown.style.display = "none";
+    }
+  });
+</script>

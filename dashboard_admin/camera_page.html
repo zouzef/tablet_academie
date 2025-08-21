@@ -1,0 +1,172 @@
+<div id="camera-page" class="page">
+                    <div class="page-header">
+                        <h2>Camera Management</h2>
+                        <div class="header-controls">
+                            <button class="btn btn-secondary" onclick="refreshCameras()">
+                                <i class="fas fa-sync-alt"></i>
+                                Refresh
+                            </button>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCameraModal" style="background-color: #4D44B5;;">
+                              <i class="fas fa-plus"></i>
+                              Add Camera
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="camera-loading" class="loading" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading cameras...</p>
+                    </div>
+
+                    <div id="camera-error" class="error-message" style="display: none;"></div>
+
+                    <div id="camera-grid-container" class="camera-grid">
+                        <!-- Cameras will be loaded here with room grouping -->
+                    </div>
+
+                    <div class="event-log">
+                        <h3>Testing camera</h3>
+                        <div class="log-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Camera</th>
+                                        <th>Event</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="event-log-body">
+                                    <!-- Event logs will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+</div>
+
+<!-- Add Camera Modal -->
+                        <div class="modal fade" id="addCameraModal" tabindex="-1" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title">Add New Camera</h5>
+                              </div>
+                             <div class="modal-body">
+                             <form id="cameraForm" class="row g-3" action="{{ url_for('handle_add_camera') }}" method="POST">
+                                 
+
+                                <div class="col-md-6">
+                                  <div class="mb-3">
+                                    <label for="cameraName" class="form-label">Camera Name</label>
+                                    <input type="text" class="form-control" id="cameraName" name="name" placeholder="camera-1" required>
+                                  </div>
+                                  <div class="mb-3">
+                                    <label for="cameraType" class="form-label">Type</label>
+                                    <select class="form-select" id="cameraType" name="cameraType" required onchange="toggleCameraFields()">
+                                      <option value="" selected disabled>Select Type</option>
+                                      <option value="webcam">Web Camera</option>
+                                      <option value="ipcam">IP Camera</option>
+                                    </select>
+                                  </div>
+
+                                  <!-- WebCam Fields (shown by default) -->
+                                  <div class="mb-3" id="webCamFields">
+                                    <label for="webCamPath" class="form-label">Device Path</label>
+                                    <input type="text" class="form-control" id="webCamPath" name="webCamPath" placeholder="/dev/video0">
+                                  </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                  <!-- IP Camera Fields (hidden by default) -->
+                                  <div id="ipCamFields" style="display: none;">
+
+                                    <div class="mb-3">
+                                      <label for="cameraIp" class="form-label">IP Address</label>
+                                      <input type="text" class="form-control" id="cameraIp" name="ip" placeholder="192.168.x.x">
+                                    </div>
+                                    <div class="mb-3">
+                                      <label for="cameraMac" class="form-label">MAC Address</label>
+                                      <input type="text" class="form-control" id="cameraMac" name="mac" placeholder="00:00:00:00">
+                                    </div>
+                                    <div class="mb-3">
+                                      <label for="cameraUsername" class="form-label">Username</label>
+                                      <input type="text" class="form-control" id="cameraUsername" name="username" placeholder="admin">
+                                    </div>
+                                    <div class="mb-3">
+                                      <label for="cameraPassword" class="form-label">Password</label>
+                                      <input type="password" class="form-control" id="cameraPassword" name="password" placeholder="•••••••">
+                                    </div>
+                                  </div>
+
+                                  <div class="mb-3">
+                                    <label for="cameraRoom" class="form-label">Class</label>
+                                    <select class="form-select" id="cameraRoom" name="roomName" required>
+                                      <option value="" selected disabled>Select class</option>
+                                    </select>
+
+                                  </div>
+                                </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary" id="saveCameraBtn">Save changes</button>
+                                  </div>
+                              </form>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const cameraType = document.getElementById('cameraType');
+    const ipCamFields = document.getElementById('ipCamFields');
+    const webCamFields = document.getElementById('webCamFields');
+    const cameraRoomSelect = document.getElementById("cameraRoom");
+
+    function toggleCameraFields() {
+        const selectedType = cameraType.value;
+
+        if (selectedType === 'ipcam') {
+            ipCamFields.style.display = 'block';
+            webCamFields.style.display = 'none';
+            document.getElementById('cameraIp').required = true;
+            document.getElementById('cameraMac').required = true;
+            document.getElementById('webCamPath').required = false;
+        } else if (selectedType === 'webcam') {
+            ipCamFields.style.display = 'none';
+            webCamFields.style.display = 'block';
+            document.getElementById('cameraIp').required = false;
+            document.getElementById('cameraMac').required = false;
+            document.getElementById('cameraUsername').required = false;
+            document.getElementById('cameraPassword').required = false;
+            document.getElementById('webCamPath').required = true;
+        }
+    }
+
+    // Fetch available rooms for the select dropdown
+    fetch("/api/rooms")
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                data.rooms.forEach(room => {
+                    const option = document.createElement("option");
+                    option.value = room.id;
+                    option.textContent = `${room.name}`;
+                    cameraRoomSelect.appendChild(option);
+                });
+            } else {
+                console.error("Failed to load rooms:", data.error);
+            }
+        })
+        .catch(err => console.error("Error fetching rooms:", err));
+
+    // Setup event listeners
+    toggleCameraFields(); // Initial call
+    cameraType.addEventListener('change', toggleCameraFields);
+});
+</script>
+
+
+
+

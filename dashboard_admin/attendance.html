@@ -1,0 +1,176 @@
+<!-- Attendance Page -->
+<div id="attendance-page" class="page">
+    <div class="page-header">
+        <h2>Error log</h2>
+        <div class="header-controls" >
+            <input type="date" class="date-input" id="attendanceDate">
+            <button class="btn btn-secondary">
+                <i class="fas fa-filter"></i>
+                Filter
+            </button>
+            <button class="btn btn-primary" id="refresh-button" style="background-color: #4D44B5;">
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+                Refresh
+            </button>
+        </div>
+    </div>
+
+    <div class="attendance-content">
+        <div class="attendance-table">
+            <div style="max-height: 400px; overflow-y: auto;">
+              <table class="table table-bordered table-hover table-rounded">
+                <thead>
+                  <tr>
+                    <th class="theadd">Time</th>
+                    <th class="theadd">Log stream</th>
+                  </tr>
+                </thead>
+                <tbody id="log-table-body">
+                  <!-- dynamically filled -->
+                </tbody>
+              </table>
+            </div>
+        </div>
+
+        <div class="attendance-stats">
+            <div class="stats-card">
+                <h3>Erreur Static</h3>
+                <div class="stat-item">
+                    <span class="stat-label">Total Message:</span>
+                    <span class="stat-value" id="total-messages"></span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Erreur:</span>
+                    <span class="stat-value error" id="error_count"></span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Wornings:</span>
+                    <span class="stat-value error" id="warning-count"></span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Info:</span>
+                    <span class="stat-value" id="info-count"></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+</div>
+
+<style>
+
+    .page-header{
+
+
+        height: 80px;
+        border-radius: 10px;
+        background-color: white;
+
+        padding: 10px;
+
+    }
+
+
+
+
+    .log-level {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+      text-transform: uppercase;
+    }
+    .log-error { background-color: #dc3545; }
+    .log-warning { background-color: #ffc107; color: #000; }
+    .log-info { background-color: #0dcaf0; }
+
+    @media (max-width: 768px){
+
+        .page-header h2{
+            font-size: 20px;
+        }
+
+        .page-header{
+            height: 120px;
+        }
+
+
+
+    }
+
+
+
+</style>
+<script>
+  function loadLogs() {
+    let number_message = 0;
+    let number_err = 0;
+    let number_worn = 0;
+    let number_info = 0;
+
+    fetch('/static/logs.json')
+      .then(response => response.json())
+      .then(data => {
+        const tbody = document.getElementById("log-table-body");
+        tbody.innerHTML = ""; // Clear existing rows
+
+        data.forEach(log => {
+          const time = new Date(log.timestamp).toLocaleTimeString();
+
+          const row = document.createElement("tr");
+
+          const timeCell = document.createElement("td");
+          timeCell.classList.add("text-small");
+          timeCell.textContent = time;
+
+          const logCell = document.createElement("td");
+          logCell.classList.add("text-small");
+
+          const levelSpan = document.createElement("span");
+          levelSpan.classList.add("log-level");
+
+          const level = log.level.toLowerCase();
+          if (level === "error") {
+            levelSpan.classList.add("log-error");
+            number_err++;
+          } else if (level === "warning") {
+            levelSpan.classList.add("log-warning");
+            number_worn++;
+          } else {
+            levelSpan.classList.add("log-info");
+            number_info++;
+          }
+          number_message = number_err + number_worn + number_info;
+
+          levelSpan.textContent = log.level;
+
+          logCell.appendChild(levelSpan);
+          logCell.innerHTML += ` ${log.message}`;
+
+          row.appendChild(timeCell);
+          row.appendChild(logCell);
+          tbody.appendChild(row);
+        });
+
+        // Update counters
+        document.getElementById("total-messages").textContent = number_message;
+        document.getElementById("error_count").textContent = number_err;
+        document.getElementById("warning-count").textContent = number_worn;
+        document.getElementById("info-count").textContent = number_info;
+      })
+      .catch(error => {
+        console.error("❌ Failed to load logs.json:", error);
+      });
+  }
+
+  // Load logs initially on page load
+  loadLogs();
+
+  // Refresh button click handler
+  document.getElementById("refresh-button").addEventListener("click", () => {
+    loadLogs();
+    console.log("🔄 Logs refreshed");
+  });
+</script>

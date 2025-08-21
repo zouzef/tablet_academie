@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Management</title>
+
+    <!-- Your existing stylesheets -->
+     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/tutorials/timelines/timeline-5/assets/css/timeline-5.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="/static/js/dashboard.js"></script>
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+          crossorigin=""/>
+  
+    
+    <!-- Minimal Bootstrap Modal CSS -->
+    <style>
+        .modal {
+          display: none;
+          position: fixed;
+          z-index: 1000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          background-color: rgba(0, 0, 0, 0.4); /* semi-transparent background */
+        }
+
+        /* Modal content box */
+        .modal-content {
+          background-color: #fff;
+          margin: 10% auto;
+          padding: 20px;
+          border-radius: 12px;
+          width: 500px;
+          max-width: 90%;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Close button */
+        .modal .close {
+          color: black;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+          cursor: pointer;
+        }
+        /* Modal Custom Styles */
+        #addCameraModal,#modifyCameraModal .modal-content {
+          border-radius: 8px;
+          border: none;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        #addCameraModal,#modifyCameraModal .modal-header {
+          border-bottom: 1px solid #e9ecef;
+          padding: 1.25rem 1.5rem;
+        }
+
+        #addCameraModal,#modifyCameraModal .modal-title {
+          font-weight: 600;
+          font-size: 1.25rem;
+          color: #333;
+        }
+
+        #addCameraModal,#modifyCameraModal .modal-body {
+          padding: 1.5rem;
+        }
+
+        #addCameraModal .form-label {
+          display: block;
+          margin-bottom: 0.5rem;
+          font-weight: 500;
+          color: #495057;
+        }
+
+        #addCameraModal .form-control,
+        #addCameraModal .form-select {
+          width: 100%;
+          padding: 0.5rem 0.75rem;
+          border: 1px solid #ced4da;
+          border-radius: 4px;
+          font-size: 0.9375rem;
+          transition: border-color 0.15s;
+        }
+
+        #addCameraModal .form-control:focus,
+        #addCameraModal .form-select:focus {
+          border-color: #86b7fe;
+          box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+        #addCameraModal .modal-footer {
+          border-top: 1px solid #e9ecef;
+          padding: 1rem 1.5rem;
+        }
+
+        #addCameraModal .btn {
+          padding: 0.5rem 1rem;
+          border-radius: 4px;
+          font-weight: 500;
+        }
+
+        #addCameraModal .btn-secondary {
+          background-color: #6c757d;
+            color: white;
+          border-color: #6c757d;
+        }
+
+        #addCameraModal .btn-primary {
+          background-color: #0d6efd;
+          border-color: #0d6efd;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+          #addCameraModal .col-md-6 {
+            width: 100%;
+          }
+        }
+
+        .modal .close:hover {
+          color: #000;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        {% include 'navbar.html' %}
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            {% include 'header.html' %}
+            <!-- Page Content -->
+            <div class="page-content">
+                {% include 'page_content.html' %}
+
+                
+                    {% include 'camera_page.html' %}
+               
+                {% include 'staff.html'%}
+                {% include 'attendance.html'%}
+                {% include 'finger_prints.html'%}
+                {% include 'settings.html'%}
+            </div>
+
+
+
+
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Hide modal if it was shown by mistake
+    const modal = document.getElementById("addCameraModal");
+    if (modal) {
+        modal.classList.remove("show");
+        modal.style.display = "none";
+        modal.setAttribute("aria-hidden", "true");
+    }
+
+    // Remove any leftover backdrop
+    const backdrops = document.querySelectorAll(".modal-backdrop");
+    backdrops.forEach(backdrop => backdrop.remove());
+
+    // Also remove "modal-open" class from body if it's there
+    document.body.classList.remove("modal-open");
+    document.body.style = ""; // reset scroll locking
+});
+</script>
+<script src="{{ url_for('static', filename='js/sidebar_toggle.js') }}"></script>
+
+</body>
+</html>

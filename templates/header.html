@@ -1,0 +1,144 @@
+<!-- Header -->
+<header class="top-header bg-white border-bottom">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center py-3">
+            <h1 class="h2 mb-0">Khalil Academie</h1>
+            <div class="d-flex align-items-center">
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary d-flex align-items-center" type="button"
+                        style="background-color: #5a47cf; color: white; border:none;"
+                        data-bs-toggle="modal" data-bs-target="#model-stat">
+                        <i class="fas fa-chart-pie me-2"></i> Statistique
+                    </button>
+                </div>
+
+                <!--<div class="dropdown">
+                    <button class="btn btn-outline-secondary d-flex align-items-center" type="button" style="background-color: #28a745; color: white; border:none;" data-bs-toggle="modal" data-bs-target="#model-attendance-teacher">
+                        <i class="fas fa-user-check me-2"></i> Mark Teacher Attendance
+                    </button>
+                </div>-->
+
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary d-flex align-items-center" type="button" style="background-color: rgb(253, 83, 83); color: white; border:none;"  data-bs-toggle="modal" data-bs-target="#model-unknown-student">
+                        <i class="fas fa-user-secret me-2"></i> Unknown Students
+                    </button>
+                </div>
+
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary d-flex align-items-center" type="button" style="background-color: rgb(252, 205, 91); color: white; border:none;">
+                        <i class="fas fa-sync-alt me-2"></i> Reset Attendance
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Modal for statistic -->
+<div class="modal fade" id="model-stat" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Statistique Attendance</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <canvas id="attendanceChart"></canvas>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+let attendanceChart; // global chart reference
+
+function showAttendanceChart(present, absent) {
+    const ctx = document.getElementById('attendanceChart').getContext('2d');
+
+    // Destroy existing chart if opened multiple times
+    if (attendanceChart) {
+        attendanceChart.destroy();
+    }
+
+    attendanceChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Present', 'Absent'],
+            datasets: [{
+                data: [present, absent],
+                backgroundColor: ['#a0e7e5', '#ffb3b3'], // colors
+                borderColor: ['#5adbb5', '#ff6b6b'],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            let value = context.raw || 0;
+                            return `${label}: ${value}`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+</script>
+
+
+
+
+
+<!--model for the mark teacher attendance-->
+
+<div class="modal fade" id="model-attendance-teacher" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- model for the unknown students-->
+
+<div class="modal fade" id="model-unknown-student" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

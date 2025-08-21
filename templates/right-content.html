@@ -1,0 +1,203 @@
+            <div class="col-lg-3" >
+                <!-- Calendar -->
+                <div class="card mt-3 mb-3" >
+
+                    <div class="card-body">
+                        <div id="calendar" class="calendar">
+                            <div class="calendar">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <button class="btn btn-sm btn-outline-secondary" id="prevBtn">&lt;</button>
+                                    <h5 id="calendar-header" class="mb-0 text-center"></h5>
+                                    <button class="btn btn-sm btn-outline-secondary" id="nextBtn">&gt;</button>
+                                </div>
+
+                                <div id="calendar-grid"></div>
+                                </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!--<div class="summary-cards">
+                    <div class="card mb-3 summary-card-purple">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="summary-icon me-3">
+                                <i class="bi bi-people"></i>
+                            </div>
+                            <div>
+                                <h3 class="mb-0">10</h3>
+                                <p class="mb-0">All Users</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-3 summary-card-green">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="summary-icon me-3">
+                                <i class="bi bi-check-circle"></i>
+                            </div>
+                            <div>
+                                <h3 class="mb-0">13</h3>
+                                <p class="mb-0">User Register Confirmed</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card summary-card-yellow">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="summary-icon me-3">
+                                <i class="bi bi-calendar"></i>
+                            </div>
+                            <div>
+                                <h3 class="mb-0">5</h3>
+                                <p class="mb-0">User Register Not Confirmed</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+
+
+
+<style>
+  .calendar-day-header {
+      font-weight: 600;
+      padding: 8px 0;
+      background-color: transparent;
+  }
+  .calendar-day {
+      padding: 10px 0;
+      border: 1px solid #f1f1f1;
+  }
+  .calendar-day-active {
+      background-color: #5a47cf;
+      color: #fff;
+      font-weight: 700;
+      border-radius: 6px;
+      display: inline-block;
+      min-width: 28px;
+      padding: 4px 8px;
+  }
+  .text-muted {
+      color: #bdbdbd !important;
+  }
+  /* ensure grid spacing */
+  #calendar-grid .row { margin-bottom: 6px; }
+</style>
+
+
+
+
+<!-- Script -->
+<script>
+  const monthNames = [
+    "January","February","March","April","May","June",
+    "July","August","September","October","November","December"
+  ];
+
+  const calendarGrid = document.getElementById("calendar-grid");
+  const calendarHeader = document.getElementById("calendar-header");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+
+  let today = new Date();
+  let currentMonth = today.getMonth(); // 0..11
+  let currentYear = today.getFullYear();
+
+  function generateCalendar(month, year) {
+    calendarGrid.innerHTML = "";
+
+    // header: weekday names
+    const daysOfWeek = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    let headerRow = document.createElement("div");
+    headerRow.className = "row text-center mb-2";
+    daysOfWeek.forEach(day => {
+      let col = document.createElement("div");
+      col.className = "col calendar-day-header";
+      col.textContent = day;
+      headerRow.appendChild(col);
+    });
+    calendarGrid.appendChild(headerRow);
+
+    // compute first weekday and days in month
+    const firstDay = new Date(year, month, 1).getDay(); // day of week for the 1st of the month
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const prevMonthLastDay = new Date(year, month, 0).getDate();
+
+    let date = 1;
+    let nextMonthDate = 1;
+
+    // always render 6 rows for stable layout
+    for (let week = 0; week < 6; week++) {
+      let weekRow = document.createElement("div");
+      weekRow.className = "row text-center";
+
+      for (let d = 0; d < 7; d++) {
+        let col = document.createElement("div");
+        col.className = "col calendar-day";
+
+        if (week === 0 && d < firstDay) {
+          // previous month
+          col.classList.add("text-muted");
+          col.textContent = prevMonthLastDay - firstDay + d + 1;
+        } else if (date > daysInMonth) {
+          // next month
+          col.classList.add("text-muted");
+          col.textContent = nextMonthDate++;
+        } else {
+          // current month
+          // create an inner element so active styling looks like your design
+          let span = document.createElement("span");
+          span.textContent = date;
+          // highlight today
+          if (
+            date === today.getDate() &&
+            month === today.getMonth() &&
+            year === today.getFullYear()
+          ) {
+            span.classList.add("calendar-day-active");
+          }
+          col.appendChild(span);
+          // if span appended, we already set content; skip setting col.textContent below
+          date++;
+        }
+
+        // if no child nodes (i.e. we set text directly for prev/next month), leave it
+        if (!col.hasChildNodes()) {
+          // already set textContent above for prev/next month cases
+        }
+
+        weekRow.appendChild(col);
+      }
+
+      calendarGrid.appendChild(weekRow);
+    }
+
+    // update header month + year (correct indexing)
+    calendarHeader.textContent = `${monthNames[month]} ${year}`;
+  }
+
+  // navigation
+  prevBtn.addEventListener("click", () => {
+    currentMonth--;
+    if (currentMonth < 0) {
+      currentMonth = 11;
+      currentYear--;
+    }
+    generateCalendar(currentMonth, currentYear);
+  });
+
+  nextBtn.addEventListener("click", () => {
+    currentMonth++;
+    if (currentMonth > 11) {
+      currentMonth = 0;
+      currentYear++;
+    }
+    generateCalendar(currentMonth, currentYear);
+  });
+
+  // initial render
+  generateCalendar(currentMonth, currentYear);
+</script>

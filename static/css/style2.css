@@ -1,0 +1,663 @@
+/* Custom CSS for HiTech University Dashboard - New Layout */
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&amp;display=swap");
+@import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,600,700");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700");
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700");
+@import url("https://fonts.googleapis.com/css?family=Nunito:400,600,700");
+@import url("../icons/simple-line-icons/css/simple-line-icons.css");
+@import url("../icons/fontawesome/css/all.min.css");
+@import url("../icons/material-design-iconic-font/css/materialdesignicons.min.css");
+@import url("../icons/themify-icons/css/themify-icons.css");
+@import url("../icons/line-awesome/css/line-awesome.min.css");
+
+
+:root{
+    --bs-body-font-family: Poppins, sans-serif;
+    --bs-body-font-size: 0.875rem;
+    --bs-body-font-weight: 400;
+    --bs-body-line-height: 1.5;
+
+}
+/* Global Styles */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #E6EBEE;
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+    font-family: var(--bs-body-font-family);
+    font-size: var(--bs-body-font-size);
+    font-weight: var(--bs-body-font-weight);
+    line-height: var(--bs-body-line-height);
+    color: var(--bs-body-color);
+    text-align: var(--bs-body-text-align);
+    
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0); 
+
+
+}
+
+
+.dropdown{
+    padding-left: 10px;
+}
+
+/* Full Width Header Styles */
+.top-header {
+   
+    padding: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    height: 90px;
+}
+
+.top-header h1 {
+    color: #4D44B5;
+    font-weight: 600;
+}
+
+/* Horizontal Navigation Styles */
+.horizontal-nav {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.nav-link-horizontal {
+    color: #6c757d;
+    text-decoration: none;
+    padding: 12px 20px;
+    margin: 2px 8px 2px 0;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.nav-link-horizontal i {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.nav-link-horizontal:hover {
+    background-color: #f8f9fa;
+    color: #495057;
+    text-decoration: none;
+}
+
+.nav-link-horizontal.active {
+    background-color: #28a745;
+    color: white;
+}
+
+.nav-link-horizontal.active:hover {
+    background-color: #218838;
+    color: white;
+}
+
+/* Main Content Area */
+.main-content {
+    padding: 0 15px;
+}
+
+/* Search Bar Styles */
+.input-group-text {
+    background-color: #f8f9fa;
+    border-color: #ced4da;
+    color: #6c757d;
+}
+
+
+
+.form-control {
+
+    padding-top:1px;
+    text-align: left;
+    border:none;
+    border-color: #ced4da;
+}
+
+.form-control:focus {
+    border-color: #4D44B5;
+    box-shadow: 0 0 0 0.25rem rgba(77, 68, 181, .5);
+}
+
+/* Card Styles */
+.card{
+    height: fit-content;
+    order: 1;
+    flex: 1;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+
+
+
+.card-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e9ecef;
+    padding: 20px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Form Styles */
+.form-label {
+    font-weight: 500;
+    color: #4D44B5;
+    margin-bottom: 5px;
+}
+
+.form-select {
+    border-color: #ced4da;
+    padding: 8px 12px;
+}
+
+.form-select:focus {
+    border-color: #4D44B5;
+    box-shadow: 0 0 0 0.25rem rgba(77, 68, 181, .5);
+}
+
+/* Button Styles */
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    padding: 8px 20px;
+    font-weight: 500;
+}
+
+.btn-success:hover {
+    background-color: #4D44B5;
+
+}
+
+/* Table Styles */
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    color:#4D44B5;
+    background-color: #E6EBEE;
+    border-top: none;
+    font-weight: 600;
+    text-align: center;
+    padding: 15px 12px;
+}
+.table #action{
+    text-align: center;
+}
+
+.table #note{
+    text-align: left;
+    padding-left: 50px;
+}
+
+.table td {
+    padding: 15px 12px;
+    vertical-align: middle;
+}
+td>span{
+    text-align: right;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Attendance Radio Buttons */
+.attendance-radio {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+}
+
+.attendance-radio.present:checked {
+    background-color: #28a781;
+    border-color: #28a745;
+}
+
+.attendance-radio.absent:checked {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.attendance-radio.leave:checked {
+    background-color: #0a5ea7;
+    border-color: #6c757d;
+}
+
+/* Calendar Styles */
+.calendar-day-header {
+    font-weight: 600;
+    color: #6c757d;
+    font-size: 12px;
+    padding: 5px 2px;
+}
+
+
+.calendar-day {
+    padding: 8px 2px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.calendar-day:hover {
+    background-color: #f8f9fa;
+}
+
+.calendar-day-active {
+    border: none;
+    background-color:#4D44B5  !important;
+    color: white !important;
+    font-weight: 600;
+}
+
+.calendar-day.text-muted {
+    color: #adb5bd !important;
+}
+
+/* Summary Cards with full background colors */
+.summary-card-purple {
+    background-color: #5a47cf; /* Purple */
+    border: none;
+    color: white;
+}
+
+.summary-card-green {
+    background-color: #28a745; /* Green */
+    border: none;
+    color: white;
+}
+
+.summary-card-yellow {
+    background-color: #fcc43e; /* Yellow */
+    border: none;
+    color: white;
+}
+
+.summary-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    background-color: rgba(255, 255, 255, 0.466); /* Light transparent circle */
+}
+
+/* Make text inside cards bold and readable */
+.summary-card-purple h3,
+.summary-card-green h3,
+.summary-card-yellow h3 {
+    font-weight: 700;
+    font-size: 2rem;
+    color: white;
+}
+
+.summary-card-purple p,
+.summary-card-green p,
+.summary-card-yellow p {
+    font-weight: 500;
+    color: white;
+    opacity: 0.9;
+}
+/* Profile Image */
+.rounded-circle {
+    object-fit: cover;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .horizontal-nav .d-flex {
+        flex-wrap: wrap;
+    }
+    
+    .nav-link-horizontal {
+        margin-bottom: 5px;
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+    
+    .nav-link-horizontal i {
+        margin-right: 6px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    body{
+        font-size: 90%;
+    }
+    
+    .top-header{
+        font-size: 85%;
+        padding-top: 25px;
+        padding-bottom: 25px;
+    }
+
+    .top-header .d-flex {
+        
+        flex-direction: row;
+        align-items: center;
+        
+    }
+    
+    .top-header h1 {
+        text-align: center;
+        
+        font-size: 1.2rem;
+    }
+    .d-flex{
+        height: 40px;
+        font-size: 15px;
+    }
+    
+    .top-header .d-flex:last-child {
+        justify-content: center;
+    }
+    
+    .input-group {
+        width: 50% !important;
+        
+    }
+    
+    .horizontal-nav .d-flex {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .nav-link-horizontal {
+        margin: 2px;
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+    
+    .calendar-day {
+        font-size: 12px;
+        padding: 6px 2px;
+    }
+    
+    .summary-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    .summary-card-green,
+    .summary-card-yellow,
+    .summary-card-red {
+        height: 50px;
+    }
+    
+    .summary-card-yellow h3,
+    .summary-card-green h3,
+    .summary-card-red h3 {
+        padding-top: 5px;
+        font-size: 1.0rem;
+    }
+}
+
+@media (max-width: 576px) {
+
+    .top-header h1{
+        
+        font-size: 1rem;
+    }
+    .btn {
+        height: 30px;
+        width: 100% auto;
+        justify-content: center;
+        font-size: 75%;   
+    }
+    .search-ar{
+        display: none;
+        height: 30px;
+        width: 100% auto;
+        justify-content: center;
+        font-size: 75%;
+    }
+    .nav-link-horizontal {
+        padding: 6px 10px;
+        font-size: 12px;
+        margin: 1px;
+    }
+    
+    .nav-link-horizontal i {
+        margin-right: 4px;
+        font-size: 12px;
+    }
+    
+    .main-content {
+        padding: 0 10px;
+    }
+    
+    .card-body {
+        width: 80%;
+        padding: 15px;
+    }
+    
+    .table-responsive {
+        font-size: 14px;
+    }
+
+
+  .calendar {
+    order: 2; /* calendar below */
+  }
+}
+
+/* Focus States */
+.btn:focus,
+.form-control:focus,
+.form-select:focus {
+    outline: none;
+}
+
+/* Border and Shadow Utilities */
+.border-bottom {
+    border-color: #e9ecef !important;
+}
+
+/* Additional Spacing */
+.pt-3 {
+    padding-top: 1rem !important;
+}
+
+.pb-2 {
+    padding-bottom: 0.5rem !important;
+}
+
+.mb-3 {
+    margin-bottom: 1rem !important;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+/* Sticky Header Adjustments */
+.top-header.sticky-top {
+    top: 0;
+}
+
+.horizontal-nav.sticky-top {
+    top: 76px; /* Adjust based on header height */
+}
+
+
+
+.btn-success{
+    background-color: #3D3690;
+    border:none;
+    
+}
+
+
+
+
+.btn-outline-secondary,.form-control,.input-group-text{
+    border: solid 1.5px;
+    border-color: #DDDDDD;
+    background-color: transparent;
+
+}
+
+
+
+.btn-outline-secondary:focus{
+    background-color: #4D44B5;
+    color: white;
+    border: none;
+}
+
+.form2{
+    border-color: #DDDDDD ;
+    height: 30px;
+}
+
+ .status {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: bold;
+        color: white;
+        text-align: center;
+    }
+
+    .status-present {
+        background-color: #28a745; /* Green */
+    }
+
+    .status-absent {
+        background-color: #ff5c5c; /* Red */
+    }
+
+
+    td>.btn {
+            height: 35px;
+            width: 120px;
+            display: inline-block;
+            padding: 5px ;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            margin-right: 8px;
+    }
+
+    td > .btn-present {
+        background-color: #5a47cf; /* Purple */
+    }
+
+    td > .btn-note {
+        background-color: #00a8a8; /* Teal */
+    }
+
+    td > .btn:hover {
+        opacity: 0.9;
+    }
+
+
+
+.note-na {
+  font-size: 12px;
+  text-align: center;
+  color: #999;
+  font-style: italic;
+}
+
+
+
+
+/* Smaller Summary Cards - Responsive */
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+}
+
+.summary-cards .card {
+    border: none;
+    border-radius: 10px;
+    padding: 0;
+}
+
+.summary-card-purple {
+    background-color: #5a47cf; /* Purple */
+    color: white;
+}
+
+.summary-card-green {
+    background-color: #28a745; /* Green */
+    color: white;
+}
+
+.summary-card-yellow {
+    background-color: #ffc107; /* Yellow */
+    color: white;
+}
+
+.summary-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.summary-cards h3 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.summary-cards p {
+    margin: 0;
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+/* Mobile optimization */
+@media (max-width: 576px) {
+    .summary-cards {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+    .summary-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+    }
+    .summary-cards h3 {
+        font-size: 1.2rem;
+    }
+    .summary-cards p {
+        font-size: 0.8rem;
+    }
+}
+
+.buttonss{
+    text-align: center;
+    horizontal:center;
+}
