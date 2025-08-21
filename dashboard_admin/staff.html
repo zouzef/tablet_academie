@@ -1,0 +1,72 @@
+<div id="staff-page" class="page">
+    <div class="page-header">
+        <h2>Tablet managment </h2>
+        <div class="header-controls">
+          <button class="btn btn-secondary" onclick="/*refreshtablet()*/">
+            <i class="fas fa-sync-alt"></i>
+              Refresh
+          </button>
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTabletModal" style="background-color: #4D44B5;border: none;">
+              <i class="fas fa-plus"></i>
+              Add Tablet
+          </button>
+        </div>
+    </div>
+
+    <div id="tablet-loading" class="loading" style="display: none;">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Loading cameras...</p>
+    </div>
+
+    <div id="tablet-error" class="error-message" style="display: none;"></div>
+
+    <div id="tablet-grid-container" class="camera-grid">
+      <!-- Tablets will be loaded here with room grouping -->
+    </div>                 
+</div>
+
+<div class="modal fade" id="addTabletModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Tablette</h5>
+            </div>
+            <div class="modal-body">
+              <form id="tabletteForm" class="row g-3" action="{{ url_for('handle_add_camera') }}" method="POST">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="tabletName" class="form-label">Tablet Name</label>
+                            <input type="text" class="form-control" id="cameraName" name="name" placeholder="tablet-1" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="cameraName" class="form-label">Mac Name</label>
+                            <input type="text" class="form-control" id="cameraName" name="name" placeholder="a4:c2:00:55" required>
+                        </div>
+
+
+                    </div>
+
+                          <div class="mb-3">
+                              <label for="cameraRoom" class="form-label">Class</label>
+                              <select class="form-select" id="cameraRoom" name="roomName" required>
+                                  <option value="" selected disabled>Select class</option>
+                              </select>
+
+                          </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="saveCameraBtn">Add camera </button>
+                    </div>
+              </form>
+            </div>
+        </div>
+</div>
+
+
+
+
+
+
+

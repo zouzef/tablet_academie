@@ -1,0 +1,294 @@
+
+                <!-- Overview Page -->
+                <div id="overview-page" class="page active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon success" id="database-card">
+                                <i class="fas fa-database" ></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Database</h3>
+                                <p class="stat-value" id="server-status" ></p>
+                                <span class="stat-status success" id="server-span"></span>
+
+                                <script>
+                                    function pollStatus() {
+                                        fetch('/api/server-status')
+                                            .then(res => res.json())
+                                            .then(data => {
+                                                if (data.status === 'down') {
+                                                    card_datbase=document.getElementById("database-card").style;
+                                                    span_datbase=document.getElementById("server-span").style;
+                                                    card_datbase.color="#ef4444";
+                                                    card_datbase.backgroundColor="#ef44441a";
+                                                    span_datbase.color="#ef4444";
+                                                    span_datbase.backgroundColor="#ef44441a";
+                                                    document.getElementById('server-status').innerText = "Erreur!";
+                                                    document.getElementById('server-span').innerText = "no connected!";
+                                                } else {
+
+                                                    document.getElementById('server-status').innerText = "Normal";
+                                                    document.getElementById('server-status').style.color = "#4D44B5";
+                                                    document.getElementById('server-span').innerText = "connected";
+                                                }
+                                            });
+                                    }
+                                    setInterval(pollStatus, 5000);
+                                    pollStatus(); // initial call
+                                </script>
+
+
+                            </div>
+                        </div>
+
+                       <div class="stat-card" id="server-load-card">
+                            <button id="error-btn" style="display:none; position:absolute; top:10px; left:10px;" onclick="showError()">!</button>
+                            <div class="stat-icon success" id="server-load-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Server Load</h3>
+                                <p class="stat-value" id="server-load-status" style="color: #4D44B5;">Normal</p>
+                                <span class="stat-status success" id="server-load-span">Healthy</span>
+                            </div>
+                        </div>
+                        <script>
+                            let lastError = "";  // Store error message from server
+
+                            function showError() {
+                                alert("Server Load Error: " + lastError);
+                            }
+
+                            function pollServerLoadStatus() {
+                                fetch('/api/server-load-status')
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        const status = data.status;
+                                        const erreur = data.erreur;
+
+                                        const card = document.getElementById("server-load-icon").style;
+                                        const span = document.getElementById("server-load-span");
+                                        const value = document.getElementById("server-load-status");
+                                        const button = document.getElementById("error-btn");
+
+                                        if (status === "down") {
+                                            card.color = "#ef4444";
+                                            card.backgroundColor = "#ef44441a";
+                                            span.innerText = "Down";
+                                            value.innerText = "Erreur!";
+                                            span.style.color = "#ef4444";
+                                            span.style.backgroundColor = "#ef44441a";
+                                            button.style.display = "block";
+                                            lastError = erreur || "Unknown error";
+                                        } else {
+                                            card.color = "";
+                                            card.backgroundColor = "";
+                                            span.innerText = "Healthy";
+
+                                            value.innerText = "Normal";
+                                            span.style.color = "";
+                                            span.style.backgroundColor = "";
+                                            button.style.display = "none";
+                                        }
+                                    })
+                                    .catch(err => {
+                                        console.error("Fetch error:", err);
+                                    });
+                            }
+
+                            setInterval(pollServerLoadStatus, 5000);
+                            pollServerLoadStatus();
+                        </script>
+
+
+
+                        <div class="stat-card" id="error-card" style="cursor:pointer;">
+                            <div class="stat-icon error">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Errors</h3>
+                                <p class="stat-value" id="error-count">0</p>
+                                <span class="stat-status error">Needs Attention</span>
+                            </div>
+                        </div>
+
+                        <script>
+                            async function updateErrorCount() {
+                                try {
+                                    const response = await fetch('/api/errors');
+                                    const data = await response.json();
+
+                                    const errorCount = data.errors.length;
+                                    
+                                    document.getElementById('error-count').innerText = errorCount;
+
+                                    // Optionally show/hide the whole card based on errors count
+                                    const errorCard = document.getElementById('error-card');
+                                    if (errorCount > 0) {
+                                        errorCard.style.display = 'flex';
+                                    } else {
+                                        errorCard.style.display = 'none';
+                                    }
+
+                                } catch (err) {
+                                    console.error("Failed to fetch errors:", err);
+                                }
+                            }
+
+                            // Show all errors in an alert window when clicking on the card
+                            document.getElementById('error-card').addEventListener('click', async () => {
+                                try {
+                                    const response = await fetch('/api/errors');
+                                    const data = await response.json();
+
+                                    if (data.errors.length === 0) {
+                                        alert("No errors!");
+                                        return;
+                                    }
+
+                                    let message = "Errors:\n\n";
+                                    data.errors.forEach((err, index) => {
+                                        message += `${index + 1}. ${err}\n`;
+                                    });
+
+                                    alert(message);
+                                } catch (err) {
+                                    alert("Failed to fetch errors.");
+                                }
+                            });
+
+                            // Initial load + poll every 5 seconds
+                            updateErrorCount();
+                            setInterval(updateErrorCount, 5000);
+
+                        </script>
+
+
+
+
+                        <div class="stat-card">
+                            <div class="stat-icon success">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Scheduled Tasks</h3>
+                                <p class="stat-value" >Running</p>
+                                <span class="stat-status success">Active</span>
+                            </div>
+                        </div>
+                    </div>
+
+                
+                        <div class="activity-card">
+                            <div class="card-header">
+                                <h3>Recent Activities</h3>
+                            </div>
+                            <div class="activity-list">
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                    <div class="activity-info">
+                                        <p class="activity-title">Generate new report</p>
+                                        <span class="activity-time">4 hours ago</span>
+                                    </div>
+                                </div>
+
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-edit"></i>
+                                    </div>
+                                    <div class="activity-info">
+                                        <p class="activity-title">Update subjects</p>
+                                        <span class="activity-time">9 hours ago</span>
+                                    </div>
+                                </div>
+
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <div class="activity-info">
+                                        <p class="activity-title">Record attendance</p>
+                                        <span class="activity-time">Yesterday</span>
+                                    </div>
+                                </div>
+
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-user-plus"></i>
+                                    </div>
+                                    <div class="activity-info">
+                                        <p class="activity-title">Added new staff</p>
+                                        <span class="activity-time">April 20</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                </div>
+
+
+<style>
+
+    .header {
+      padding: 20px;
+    }
+
+    .version-box {
+      border-radius: 10px;
+      background: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .version-title {
+      font-weight: bold;
+    }
+
+    .dot {
+      height: 10px;
+      width: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    .dot-green {
+      background-color: #28a745;
+    }
+
+    .dot-blue {
+      background-color: #0d6efd;
+    }
+
+    .badge-new {
+      background-color: red;
+    }
+
+    .version-meta {
+      font-size: 14px;
+      color: gray;
+    }
+
+    .version-size {
+      font-size: 14px;
+    }
+
+    .top-cards .card {
+      text-align: center;
+    }
+
+    .btn-download {
+      background-color: black;
+      color: white;
+    }
+
+    .btn-download:hover {
+      background-color: #333;
+    }
+
+
+</style>

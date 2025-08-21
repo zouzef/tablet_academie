@@ -1,0 +1,261 @@
+<style>
+
+       .mini_container{
+            margin-top: 15px;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+
+       }
+       .mini_container h4{
+        text-align: center ;
+       }
+
+    .form-input{
+        width: 150px;
+    }
+
+    .page-header{
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+
+    }
+
+
+    #password_rustdesk{
+        width: 150px;
+    }
+
+    .modal-header h5{
+        text-align: center;
+
+    }
+
+
+
+
+
+
+@media (max-width: 768px) {
+    .page-header h2{
+        font-size: 20px
+    }
+
+    .page-header{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+       
+
+}
+
+
+</style>
+<link rel="stylesheet" href="/static/css/mini.css">
+
+<div id="settings-page" class="page">
+    <div class="page-header">
+        <h2>Settings</h2>
+            <button class="btn btn-primary" id="refresh-button">
+                <i class="fas fa-save"></i> Save configurations
+            </button>
+    </div>
+
+    <div class="settings-content">
+        <div class="settings-section">
+            <h3 style="font-size: 22px;">Server Configuration</h3>
+                <div class="mini_container">
+                    <h4>Server Settings</h4>  
+                        <div class="setting-item">
+                            <label>Server Address</label>
+                            <div id="ip_server" class="form-input"></div>
+                        </div>
+                        <div class="setting-item">
+                            <label>Database Connection</label>
+                            <select class="form-select">
+                                <option>MySQL</option>
+                                <option>PostgreSQL</option>
+                                <option>SQLite</option>
+                            </select>
+                        </div>
+                </div>
+            
+
+                <div class="mini_container">
+                    <h4>Rustdesk Configuration</h4>
+                    <form action="">
+                        <div class="setting-item">
+                            <label>ID rustdesk</label>
+                            <div  value="" id="id_rustdesk" class="form-input"></div>
+                        </div>
+                        <div class="setting-item">
+                            <label class="form-label">Password Rustdesk</label>
+                            <div class="input-group">
+                                <div id="password_rustdesk" class="form-control bg-light"></div>
+                                <button class="btn btn-outline-secondary" type="button" id="showPasswordBtn">
+                                    <i class="bi bi-eye-fill"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="passwordForm">
+                        <div class="modal-header">
+                            <h5 id="">Authentication</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" id="sclmac" class="form-control" placeholder="SCL Mac" required>
+                        </div>
+
+                        <div class="modal-body">
+                            <input type="password" id="sclPassword" class="form-control" placeholder="SCL Password" required>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">check</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <!--<div class="settings-section" style="margin: 20px;">
+            <h3>Camera Settings</h3>
+                <div class="setting-item">
+                    <label>Recording Quality</label>
+                    <select class="form-select">
+                        <option>1080p</option>
+                        <option>720p</option>
+                        <option>480p</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>Auto Recording</label>
+                    <label class="toggle">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+        </div>
+
+        <div class="settings-section">
+            <h3>Fingerprint Settings</h3>
+            <div class="setting-item">
+                <label>Scanner Sensitivity</label>
+                <input type="range" min="1" max="10" value="7" class="range-input">
+            </div>
+            <div class="setting-item">
+                <label>Auto Enrollment</label>
+                <label class="toggle">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>-->
+    </div>
+</div>
+            
+
+
+
+<script>
+ 
+
+    document.getElementById("showPasswordBtn").addEventListener("click", function () {
+        const modal = new bootstrap.Modal(document.getElementById("passwordModal"));
+        modal.show();
+    });
+
+// Update password display after form submit
+    let pass;
+
+    fetch("https://192.168.0.44:5000/slc/get-details")
+    .then(async (res) => {
+        const contentType = res.headers.get("content-type");
+        if (!res.ok) {
+        const errorText = await res.text(); // get actual HTML error page or message
+        throw new Error(`Server error (${res.status}): ${errorText}`);
+        }
+
+        if (!contentType || !contentType.includes("application/json")) {
+        throw new TypeError("Invalid response type, expected JSON.");
+        }
+
+        return res.json();
+    })
+    .then(data => {
+        pass=data.password;
+        document.getElementById('id_rustdesk').innerHTML=data.username;
+        document.getElementById('password_rustdesk').innerHTML="*".repeat(data.username.length);
+        document.getElementById('ip_server').innerHTML="192.168.0.44";
+ 
+
+        document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+    })
+    .catch(err => {
+        console.error("❌ Failed to load camera data:", err);
+    });
+
+
+
+
+    document.getElementById("passwordForm").addEventListener("submit", function(event) {
+    event.preventDefault();  // Prevent full page reload
+
+    const username = document.getElementById("sclmac").value;
+    const password = document.getElementById("sclPassword").value;
+       
+    fetch("https://192.168.0.44:5000/check-login", {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+        username: username,
+        password: password
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+        
+        // Optional: close modal, refresh UI, etc.
+        const modal = bootstrap.Modal.getInstance(document.getElementById('passwordModal'));
+        modal.hide();
+        } else {
+        alert("❌ Login failed: " + data.message);
+        }
+    })
+    .catch(err => {
+        console.error("⚠️ Error during login:", err);
+        alert("⚠️ Request failed.");
+    });
+    });
+
+    
+     document.getElementById("passwordForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const newPassword = document.getElementById("sclPassword").value;
+        document.getElementById("password_rustdesk").textContent = newPassword;
+        // Close modal
+        bootstrap.Modal.getInstance(document.getElementById("passwordModal")).hide();
+        document.getElementById("password_rustdesk").innerHTML = pass;
+        // Optionally, send newPassword to the backend via fetch/AJAX
+    });
+        
+
+
+
+
+</script>
