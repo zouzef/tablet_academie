@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Select Example</title>
+</head>
+<body>
+
+  <label for="student-select">Choose a student:</label>
+  <select id="student-select">
+    <option value="">-- Select a student --</option>
+    <option value="1">Alice</option>
+    <option value="2">Bob</option>
+    <option value="3">Charlie</option>
+  </select>
+
+  <script>
+    const studentSelect = document.getElementById("student-select");
+
+    // Listen for changes
+    studentSelect.addEventListener("change", function() {
+      const selectedValue = this.value;
+      const selectedText = this.options[this.selectedIndex].text;
+      console.log("Selected value:", selectedValue);
+      console.log("Selected label:", selectedText);
+    });
+  </script>
+
+</body>
+</html>

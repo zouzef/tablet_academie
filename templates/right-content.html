@@ -1,4 +1,5 @@
-            <div class="col-lg-3" >
+
+<div class="col-lg-3" >
                 <!-- Calendar -->
                 <div class="card mt-3 mb-3" >
 
@@ -20,72 +21,19 @@
 
 
 
-                <!--<div class="summary-cards">
+                <div class="summary-cards">
                     <div class="card mb-3 summary-card-purple">
-                        <div class="card-body d-flex align-items-center">
-                            <div class="summary-icon me-3">
-                                <i class="bi bi-people"></i>
-                            </div>
-                            <div>
-                                <h3 class="mb-0">10</h3>
-                                <p class="mb-0">All Users</p>
-                            </div>
+                        <div class="card-body">
+                            <h4 class="card-title">Scan for presence</h4>
+                            <div id="qrcode"></div>
                         </div>
                     </div>
 
-                    <div class="card mb-3 summary-card-green">
-                        <div class="card-body d-flex align-items-center">
-                            <div class="summary-icon me-3">
-                                <i class="bi bi-check-circle"></i>
-                            </div>
-                            <div>
-                                <h3 class="mb-0">13</h3>
-                                <p class="mb-0">User Register Confirmed</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card summary-card-yellow">
-                        <div class="card-body d-flex align-items-center">
-                            <div class="summary-icon me-3">
-                                <i class="bi bi-calendar"></i>
-                            </div>
-                            <div>
-                                <h3 class="mb-0">5</h3>
-                                <p class="mb-0">User Register Not Confirmed</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-            </div>-->
+            </div>
 
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
-
-<style>
-  .calendar-day-header {
-      font-weight: 600;
-      padding: 8px 0;
-      background-color: transparent;
-  }
-  .calendar-day {
-      padding: 10px 0;
-      border: 1px solid #f1f1f1;
-  }
-  .calendar-day-active {
-      background-color: #5a47cf;
-      color: #fff;
-      font-weight: 700;
-      border-radius: 6px;
-      display: inline-block;
-      min-width: 28px;
-      padding: 4px 8px;
-  }
-  .text-muted {
-      color: #bdbdbd !important;
-  }
-  /* ensure grid spacing */
-  #calendar-grid .row { margin-bottom: 6px; }
-</style>
 
 
 
@@ -200,4 +148,48 @@
 
   // initial render
   generateCalendar(currentMonth, currentYear);
+
+
+  let path = "/api/students/12345"; // your path
+  let fullUrl = window.location.origin + path; // make it a full URL if needed
+
+  new QRCode(document.getElementById("qrcode"), {
+    text: fullUrl,
+    width: 200,
+    height: 200
+  });
+
+
 </script>
+
+
+
+
+<style>
+  .calendar-day-header {
+      font-weight: 600;
+      padding: 8px 0;
+      background-color: transparent;
+  }
+  .calendar-day {
+      padding: 10px 0;
+      border: 1px solid #f1f1f1;
+  }
+  .calendar-day-active {
+      background-color: #5a47cf;
+      color: #fff;
+      font-weight: 700;
+      border-radius: 6px;
+      display: inline-block;
+      min-width: 28px;
+      padding: 4px 8px;
+  }
+  .text-muted {
+      color: #bdbdbd !important;
+  }
+  /* ensure grid spacing */
+  #calendar-grid .row { margin-bottom: 6px; }
+
+
+
+</style>

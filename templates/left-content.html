@@ -1,4 +1,4 @@
-<div class="col-lg-9" styl>
+<div class="col-lg-9" >
     <!-- Subject Attendance Section -->
     <div class="card mt-3">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -105,6 +105,10 @@
     </div>
 </div>
 
+
+
+
+
 <!-- Real-time update notifications -->
 <div id="updateToast" class="toast-container position-fixed top-0 end-0 p-3">
     <div id="updateNotification" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
@@ -112,81 +116,120 @@
             <strong class="me-auto">Real-time Update</strong>
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
+
         <div class="toast-body" id="toastMessage">
             <!-- Dynamic message -->
         </div>
     </div>
 </div>
 
+
+<!-- add note modal -->
+ <div class="modal fade" id="model-add-note" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-g">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="font-size: 0.9rem;">add note for user</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <label for="noteTextArea" class="form-label" style="border: none;">Note</label>
+                <textarea class="form-control" id="noteTextArea" rows="3"></textarea>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                style="background-color: rgb(251, 125, 91); border:none;">
+                Close
+                </button>
+                <button type="button" class="btn btn-primary"
+                style="border:none; background-color: rgb(77, 68, 181);" id="add-note">
+                Add note user
+                </button>
+            </div>
+
+        </div>
+    </div>
+ </div>
+
+
+
+
+
+
 <!-- Add student modal -->
 <div class="modal fade" id="model-add-student" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-g">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="">Add Student</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <!-- Add your student form here -->
-          <form>
-              <div class="form-row">
-                <div class="form-group col-md-6">
-                  <label for="inputEmail4">Email</label>
-                  <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
-                </div>
-                <div class="form-group col-md-6">
-                  <label for="inputPassword4">Password</label>
-                  <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="inputAddress">Address</label>
-                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-              </div>
-              <div class="form-group">
-                <label for="inputAddress2">Address 2</label>
-                <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-              </div>
-              <div class="form-row">
-                <div class="form-group col-md-6">
-                  <label for="inputCity">City</label>
-                  <input type="text" class="form-control" id="inputCity">
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="inputState">State</label>
-                  <select id="inputState" class="form-control">
-                    <option selected>Choose...</option>
-                    <option>...</option>
-                  </select>
-                </div>
-                <div class="form-group col-md-2">
-                  <label for="inputZip">Zip</label>
-                  <input type="text" class="form-control" id="inputZip">
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="gridCheck">
-                  <label class="form-check-label" for="gridCheck">
-                    Check me out
-                  </label>
-                </div>
-              </div>
-              <button type="submit" class="btn btn-primary">Sign in</button>
-            </form>
+        <div class="modal-header">
+            <h5 class="modal-title" style="font-size: 0.9rem;">Add new student</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="recherche">
+                <label for="student-select" class="form-label">Select user</label>
+                <select id="student-select" class="form-select my-select" style="width:100%;">
+                </select>
 
-        <p>Student addition form goes here...</p>
-      </div>
+            <div class="recherche" style="margin-top: 20px;">
+                <label for="change-group" class="form-label">Change user group?</label>
+
+                <br>
+
+                <div class="custom-checkbox">
+                    <input type="checkbox" id="checkbox1" name="checkbox">
+                    <label for="checkbox1">
+                        <span class="box"></span>
+                            Yes, change this user to the selected group.
+                    </label>
+                </div>
+            </div>
+            <br>
+            <label for="change-group" class="form-label">Join user to this group?</label>
+            <div class="custom-checkbox">
+                <input type="checkbox" id="checkbox2" name="checkbox">
+                <label for="checkbox2">
+                <span class="box"></span>
+                    Yes, add user to this group.
+                </label>
+            </div>
+            <br>
+            <div class="current-group" style="display: none;" id="current-group">
+                <label for="change-group" class="form-label">Select Current Group</label>
+                <div class="custom-checkbox">
+                    <select class="form-select my-select" id="change-group" style="width:100%;">
+                        <!-- options will be added dynamically by JS -->
+                    </select>
+                </div>
+            </div>
+
+        </div>
+    </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+          style="background-color: rgb(251, 125, 91); border:none;">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary"
+          style="border:none; background-color: rgb(77, 68, 181);" id="add-new-user">
+          Add new user
+        </button>
       </div>
     </div>
   </div>
 </div>
 
+
+
+
+<!-- jQuery (must come before Select2 JS) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Select2 JS (must come after jQuery) -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <!-- Include Socket.IO -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+
 
 <script>
     // Global variables
@@ -218,7 +261,6 @@
         // Real-time attendance updates
         socket.on('attendance_update', function(data) {
             if (data.session_id === sessionId) {
-                console.log('Attendance update received:', data);
                 attendanceData = data.attendance;
                 renderAttendanceTable();
                 showNotification('Attendance data updated!', 'success');
@@ -227,14 +269,14 @@
 
         // Real-time status updates
         socket.on('status_update', function(data) {
-            console.log('Status update received:', data);
+
             updateStudentStatusInTable(data.attendance_id, data.new_status);
             showNotification('Student status updated!', 'info');
         });
 
         // Real-time note updates
         socket.on('note_update', function(data) {
-            console.log('Note update received:', data);
+
             updateStudentNoteInTable(data.user_id, data.note);
             showNotification('Note added!', 'info');
         });
@@ -280,7 +322,7 @@
         toast.show();
     }
 
-    function loadcalender(sessionId) {
+    function loadcalender(sessionId){
         fetch(`/attendance/${sessionId}`)
             .then(res => {
                 if (!res.ok) {
@@ -289,11 +331,11 @@
                 return res.json();
             })
             .then(data => {
-                console.log("Session Data:", data);
+
                 document.getElementById('name_group_label').innerHTML = data.name || 'N/A';
                 document.getElementById('teacher_name').innerHTML = data.teacherFullName || 'N/A';
                 document.getElementById('room_name').innerHTML = data.roomName || 'N/A';
-                document.getElementById('subject_name').innerHTML = data.subject || 'N/A';
+                document.getElementById('subject_name').innerHTML = data.subjectName || 'N/A';
             })
             .catch(err => {
                 console.error("Error loading session data:", err);
@@ -354,7 +396,7 @@
                             ${item.isPresent ? 'disabled' : ''}>
                         ${item.isPresent ? 'Already Present' : 'Mark as Present'}
                     </button>
-                    <button class="btn btn-note btn-info" onclick="addNote(${item.userId}, ${item.id})">Add Note</button>
+                    <button class="btn btn-note btn-info" onclick="addNote(${item.userId}, ${item.id})" data-bs-toggle="modal" data-bs-target="#model-add-note">Add Note</button>
                 </td>
             `;
             tbody.appendChild(row);
@@ -413,7 +455,7 @@
     }
 
     function markPresent(id) {
-        console.log('Marking present:', id);
+
         showLoadingIndicator(true);
 
         fetch(`/change-stutatus/${id}`, {
@@ -446,45 +488,92 @@
             showNotification("An error occurred while marking present.", 'warning');
         });
     }
+// Global variables for note functionality
+let currentNoteStudentId = null;
+let currentNoteAttendanceId = null;
 
-    function addNote(studentId, attendanceId) {
-        const note = prompt("Enter a note for this student:");
-        if (note && note.trim()) {
-            fetch(`/add-note/${studentId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    note: note.trim(),
-                    session_id: sessionId
-                })
-            })
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error(`HTTP error! status: ${res.status}`);
-                }
-                return res.json();
-            })
-            .then(data => {
-                if (data.status === "success") {
-                    showNotification("Note added successfully!", 'success');
-                    // The real-time update will handle the UI update
-                } else {
-                    showNotification(`Failed to add note: ${data.message || 'Unknown error'}`, 'warning');
-                }
-            })
-            .catch(err => {
-                console.error("Error adding note:", err);
-                showNotification("An error occurred while adding note.", 'warning');
+function addNote(userId, attendanceId) {
+    // Store the IDs for use in the modal
+    currentNoteStudentId = userId;
+    currentNoteAttendanceId = attendanceId;
+
+    // Clear previous note text
+    document.getElementById('noteTextArea').value = '';
+
+    // The modal will open automatically due to data-bs-target attribute
+}
+
+// Update the event listener for the add-note button
+document.getElementById('add-note').addEventListener('click', function() {
+    const note = document.getElementById('noteTextArea').value.trim();
+
+    if (!note) {
+        showNotification('Please enter a note before saving.', 'warning');
+        return;
+    }
+
+    if (!currentNoteStudentId || !currentNoteAttendanceId) {
+        showNotification('Error: Student information not found.', 'warning');
+        return;
+    }
+
+    // Show loading indicator
+    showLoadingIndicator(true);
+
+    // The endpoint expects attendance_id in the URL, not user_id
+    const requestBody = {
+        note: note,
+        session_id: sessionId  // This is needed for the socket.io room
+    };
+
+
+
+    fetch(`/add-note/${currentNoteAttendanceId}`, {  // Use attendanceId, not userId
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+    })
+    .then(res => {
+        if (!res.ok) {
+            return res.text().then(text => {
+                throw new Error(`HTTP error! status: ${res.status}, response: ${text}`);
             });
         }
-    }
+        return res.json();
+    })
+    .then(data => {
+        showLoadingIndicator(false);
+        if (data.status === "success") {
+            showNotification("Note added successfully!", 'success');
+            $('#model-add-note').modal('hide');
+
+            // Clear the stored IDs
+            currentNoteStudentId = null;
+            currentNoteAttendanceId = null;
+        } else {
+            showNotification(`Failed to add note: ${data.message || 'Unknown error'}`, 'warning');
+        }
+    })
+    .catch(err => {
+        console.error("Error adding note:", err);
+        showLoadingIndicator(false);
+        showNotification("An error occurred while adding the note.", 'warning');
+    });
+});
+
+// Reset note variables when modal is closed
+document.getElementById('model-add-note').addEventListener('hidden.bs.modal', function () {
+    currentNoteStudentId = null;
+    currentNoteAttendanceId = null;
+    document.getElementById('noteTextArea').value = '';
+});
 
     // Search/filter functionality
     function filterStudents() {
         const searchTerm = document.getElementById('studentSearch').value.toLowerCase().trim();
-        console.log(searchTerm);
+
         if (!searchTerm) {
             filteredData = [];
             renderAttendanceTable();
@@ -500,6 +589,7 @@
         renderAttendanceTable();
     }
 
+
     // Real-time search as user types
     document.addEventListener('DOMContentLoaded', () => {
         const searchInput = document.getElementById('studentSearch');
@@ -513,7 +603,7 @@
 
     // Initialize everything when page loads
     document.addEventListener('DOMContentLoaded', () => {
-        console.log("Session ID:", sessionId);
+
 
         if (sessionId) {
             // Initialize real-time connection
@@ -526,7 +616,7 @@
             // Set up periodic refresh as backup (every 2 minutes)
             setInterval(() => {
                 if (!socket || !socket.connected) {
-                    console.log('Socket disconnected, falling back to polling');
+
                     loadAttendance(sessionId);
                 }
             }, 120000);
@@ -545,7 +635,313 @@
         end: "{{ session_info.end }}",
         subject: "{{ session_info.subject if session_info.subject else '' }}"
     };
+
+let currentCalendarId = null;
+function loadStudentList(calendarId) {
+    // Store the calendar ID for use in the event listener
+    currentCalendarId = calendarId;
+
+    fetch(`/slc/list-add-student-attendance/${calendarId}`)
+    .then(res => {
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+    })
+    .then(data => {
+        const students = data.users || [];
+
+
+
+        const select = document.querySelector("#student-select");
+        select.innerHTML = ""; // clear previous options
+
+        // Add default option
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Select a student";
+        defaultOption.selected = true;
+        select.appendChild(defaultOption);
+
+        if (students.length === 0) {
+
+            const option = document.createElement("option");
+            option.textContent = "No students found";
+            option.disabled = true;
+            select.appendChild(option);
+            return;
+        }
+
+        // Populate students
+        students.forEach(student => {
+
+
+            const option = document.createElement("option");
+
+            // Set the required data attributes
+            option.dataset.relationId = student.relationId || student.id;
+            option.dataset.id = student.id || student.userId;
+            option.dataset.groupId = student.groupId || "default";
+
+            option.value = student.id || student.userId; // Important for Select2
+            option.textContent = student.fullName || student.name || "Unknown Student";
+
+            select.appendChild(option);
+        });
+
+        // Re-initialize Select2
+        $('#student-select').select2({
+            dropdownParent: $('#model-add-student'),
+            placeholder: "Select a student",
+            allowClear: false,
+            width: '100%'
+        });
+
+    })
+    .catch(err => {
+        console.error("Error loading student list:", err);
+        // Show error in the dropdown
+        const select = document.querySelector("#student-select");
+        select.innerHTML = "";
+        const errorOption = document.createElement("option");
+        errorOption.textContent = "Error loading students";
+        errorOption.disabled = true;
+        select.appendChild(errorOption);
+    });
+}
+
+function load_current_group(calendarId, userId) {
+
+    fetch(`/slc/attendance-get-group-student-select/${calendarId}/${userId}`)
+    .then(res => {
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        return res.json();
+    })
+    .then(data => {
+
+        if (!data.groups || !Array.isArray(data.groups)) {
+            console.error("Expected groups array but got:", data);
+            return;
+        }
+
+        const select = document.getElementById('change-group');
+        select.innerHTML = '';
+
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = 'Select a group';
+        defaultOption.selected = true;
+        select.appendChild(defaultOption);
+
+        const uniqueGroups = new Map();
+        data.groups.forEach(group => {
+            if (!uniqueGroups.has(group.id)) {
+                uniqueGroups.set(group.id, group.name);
+            }
+        });
+
+        uniqueGroups.forEach((name, id) => {
+
+            const option = document.createElement('option');
+            option.value = id;
+
+            option.textContent = name;
+            select.appendChild(option);
+        });
+
+        document.getElementById('current-group').style.display = 'block';
+    })
+    .catch(err => {
+        console.error("Error loading current group:", err);
+        document.getElementById('current-group').style.display = 'none';
+    });
+}
+    const studentSelect = document.getElementById("student-select");
+
+
+
+// Example call (replace with your sessionId var)
+loadStudentList(sessionId);
+
 </script>
+
+<script>
+$(document).ready(function () {
+    // Initialize Select2 inside the modal
+    $('#student-select').select2({
+        dropdownParent: $('#model-add-student'),
+        placeholder: "Select a student",
+        allowClear: false,
+        width: '100%'
+    });
+
+    // Function to check if checkbox2 is checked and student is selected
+    function checkConditionsForAddUser() {
+        const checkbox1 = $('#checkbox1').is(':checked');
+        const checkbox2 = $('#checkbox2').is(':checked');
+        const selectedOption = $('#student-select').find("option:selected");
+        const studentId = selectedOption.data("id");
+        const groupId = selectedOption.data("group-id");
+
+        const relationId = selectedOption.data("relationId");
+        const studentName = selectedOption.text();
+        const studentSelected = !!studentId;
+
+
+
+
+        // Only proceed if checkbox2 is checked and student is selected
+        if (checkbox2 && studentSelected) {
+            // Print all the values to console
+
+            // Prepare data to send to Flask endpoint
+            const requestData = {
+                userId: studentId,
+                calendarId: sessionId, // assuming sessionId is your calendar ID
+                groupId: groupId,
+                relationId: relationId, // or another relation ID if different
+                checkbox1: checkbox1,
+                checkbox2: checkbox2,
+                selectedGroupId: $('#change-group').val() // get selected group from dropdown if checkbox1 is checked
+            };
+            console.log("groupId");
+
+
+
+            // Make AJAX call to Flask endpoint
+            $.ajax({
+                url: '/api/add-student-attendance',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+                success: function(response) {
+
+                    alert("Student added successfully!");
+                    $('#model-add-student').modal('hide'); // Close modal on success
+                },
+
+            });
+        }
+        if ((checkbox1 == false ) && (checkbox2 == false) && (studentSelected)) {
+            const requestData = {
+                userId: studentId,
+                calendarId: sessionId,
+                groupId:groupId,
+                relationId:relationId,
+                checkbox1:checkbox1,
+                checkbox2:checkbox2,
+                selectedGroupId: $('#change-group').val()
+            };
+            $.ajax({
+                url: '/api/add-student-attendance',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+                success: function(response) {
+
+                    alert("Student added successfully!");
+                    $('#model-add-student').modal('hide'); // Close modal on success
+                },
+
+            });
+        }
+        if(checkbox1 && studentSelected){
+            const selectedGroupId = $('#change-group').val();
+            alert(selectedGroupId);
+            const requestData = {
+                userId: studentId,
+                calendarId: sessionId,
+                groupId:selectedGroupId,
+                relationId:relationId,
+                checkbox1:checkbox1,
+                checkbox2:checkbox2,
+                selectedGroupId: $('#change-group').val()
+            }
+            $.ajax({
+                url: '/api/add-student-attendance',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+                success: function(response) {
+
+                    alert("Student added successfully!");
+                    $('#model-add-student').modal('hide'); // Close modal on success
+                },
+
+            });
+        }
+
+
+    }
+
+    // Handle add-user button click
+    $('#add-new-user').on('click', function() {
+        checkConditionsForAddUser();
+    });
+
+    // Function to check if first checkbox is checked and student is selected
+    function checkStudentAndCheckbox() {
+        const checkbox1 = $('#checkbox1').is(':checked');
+        const selectedOption = $('#student-select').find("option:selected");
+        const studentId = selectedOption.data("id");
+        const studentSelected = !!studentId;
+
+        // Check if first checkbox is checked AND a student is selected
+        if (checkbox1 && studentSelected) {
+            load_current_group(sessionId, studentId);
+        }
+    }
+
+    // Reset modal form when modal is closed
+    $('#model-add-student').on('hidden.bs.modal', function () {
+        // Reset checkboxes
+        $('#checkbox1').prop('checked', false);
+        $('#checkbox2').prop('checked', false);
+
+        // Reset student selection
+        $('#student-select').val('').trigger('change');
+
+        // Hide current group section
+        $('#current-group').hide();
+
+        // Enable checkbox2 in case it was disabled
+        $('#checkbox2').prop('disabled', false);
+
+        // Clear group selection
+        $('#change-group').empty();
+    });
+
+    // Log selection and check conditions for checkbox1
+    $('#student-select').on('change', function () {
+        const selectedValue = $(this).val();
+        const selectedText = $(this).find("option:selected").text();
+        const studentId = $(this).find("option:selected").data("id");
+
+
+
+        // Call check function for checkbox1 functionality
+        checkStudentAndCheckbox();
+    });
+
+    // Show/hide group select when first checkbox is toggled
+    $('#checkbox1').on('change', function () {
+        if (this.checked) {
+            $('#current-group').show();
+        } else {
+            $('#current-group').hide();
+        }
+
+        // Call check function for checkbox1 functionality
+        checkStudentAndCheckbox();
+    });
+});
+</script>
+
+
+
+
+
+
 
 <style>
     .form2 {
@@ -690,16 +1086,14 @@
         border-color: #6c757d;
     }
 </style>
-
-
 <!-- ADD THESE PAGINATION VARIABLES to your existing JavaScript (add at the top with other global variables) -->
 <script>
-    let absent_students = 0;
-    let present_students = 0;
-
+    var absent_students = 0;
+    var present_students = 0;
 
     // ADD these pagination variables with your existing global variables
-    let currentPage = 1;
+
+
     let entriesPerPage = 8;
     let totalPages = 1;
 
@@ -728,6 +1122,7 @@
 
         // Render table rows for current page
         pageData.forEach(item => {
+
             const statusClass = item.isPresent ? "status-present" : "status-absent";
             const statusText = item.isPresent ? "Present" : "Absent";
             const note = item.note ? item.note : "N/A";
@@ -737,6 +1132,7 @@
             } else {
                 absent_students++;
             }
+
 
 
 
@@ -751,10 +1147,10 @@
                 <td class="buttonss">
                     <button class="btn btn-present ${item.isPresent ? 'btn-secondary' : 'btn-success'}"
                             onclick="markPresent(${item.id})"
-                            ${item.isPresent ? 'disabled' : ''}>
+                            ${item.isPresent ? 'disabled' : ''} >
                         ${item.isPresent ? 'Already Present' : 'Mark as Present'}
                     </button>
-                    <button class="btn btn-note btn-info" onclick="addNote(${item.userId}, ${item.id})">Add Note</button>
+                    <button class="btn btn-note btn-info" onclick="addNote(${item.userId}, ${item.id})" data-bs-toggle="modal" data-bs-target="#model-add-note">Add Note</button>
                 </td>
             `;
             tbody.appendChild(row);
@@ -764,21 +1160,26 @@
         // Update pagination controls
         renderPaginationControls();
     }
-    document.getElementById("model-stat").addEventListener("shown.bs.modal", function () {
-        showAttendanceChart(present_students, absent_students);
-    });
+
+
+
+
+
+
+
+
 
     // UPDATE your existing filterStudents() function - add currentPage = 1; line
     function filterStudents() {
         const searchTerm = document.getElementById('studentSearch').value.toLowerCase().trim();
-        
+
         if (!searchTerm) {
             filteredData = [];
         } else {
             filteredData = attendanceData.filter(student => {
                 const userName = student.userName.toLowerCase();
                 const userId = student.userId.toString().toLowerCase();
-                
+
                 return userName.includes(searchTerm) || userId.includes(searchTerm);
             });
         }
@@ -839,6 +1240,35 @@
             renderAttendanceTable();
         }
     }
+
+
+
+    const checkbox1 = document.getElementById("checkbox1");
+    const checkbox2 = document.getElementById("checkbox2");
+    const currentGroup = document.getElementById("current-group");
+
+    checkbox1.addEventListener("change", function () {
+        if (this.checked) {
+            // Show the select
+            currentGroup.style.display = "block";
+            // Disable and uncheck the second checkbox
+            checkbox2.checked = false;
+            checkbox2.disabled = true;
+        } else {
+            // Hide the select
+            currentGroup.style.display = "none";
+            // Enable the second checkbox
+            checkbox2.disabled = false;
+        }
+    });
+
+    checkbox2.addEventListener("change", function () {
+        // If second checkbox is checked, first checkbox is still usable
+        // So nothing else to do
+    });
+
+
+
 </script>
 
 <!-- ADD THESE PAGINATION STYLES to your existing <style> section -->
@@ -919,3 +1349,85 @@
         }
     }
 </style>
+
+<style>
+  /* Style Select2 to look good inside Bootstrap modal */
+    .select2-container .select2-selection--single {
+        height: 40px !important;
+        display: flex;
+        align-items: center;
+        border-radius: 8px;
+        border: 1px solid #ced4da;
+    }
+
+    .select2-container--default .select2-results__group {
+        font-weight: 600;
+        color: #555;
+        font-size: 0.9rem;
+    }
+
+    .select2-container--default .select2-results__option {
+        padding-left: 20px;
+    }
+
+    /* Make dropdown fit modal width */
+    .select2-container {
+        width: 100% !important;
+    }
+    .recherche {
+        border-radius: 5px;
+        padding: 10px;
+        background-color: #edf3f8;
+    }
+    .recherche>label{
+        color: rgb(160, 152, 174);
+    }
+
+
+    /* Hide default checkbox */
+    .custom-checkbox input[type="checkbox"] {
+      display: none;
+    }
+
+    /* Create custom checkbox box */
+    .custom-checkbox label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      font-size: 16px;
+      color: rgb(160, 152, 174);
+    }
+
+    /* Square box */
+    .custom-checkbox .box {
+      display: inline-block;
+      width: 19px;
+      height: 19px;
+      background-color: transparent;
+      border: 1px solid #c4c3c3;
+      border-radius: 4px;
+      margin-right: 8px; /* space between box and text */
+      position: relative;
+    }
+
+    /* Checked state */
+    .custom-checkbox input[type="checkbox"]:checked + label .box {
+      background-color: #673ab7;
+      border-color: #673ab7;
+    }
+
+    /* White checkmark */
+    .custom-checkbox input[type="checkbox"]:checked + label .box::after {
+      content: "✔";
+      color: white;
+      font-size: 16px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+</style>
+
+
+

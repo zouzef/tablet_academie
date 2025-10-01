@@ -1,0 +1,25 @@
+{
+  "url":{
+    "API_BASE_URL": "https://192.168.0.45:5002/scl",
+    "get_all_tablets": "/get-all-tablets",
+    "get_all_calendar": "/get-all-calender",
+    "update-attendance-note": "/update-attendance-note",
+    "show_attendance_unknown": "/show-attendance-unknown-student/{calendarId}",
+    "get_unknown_student_attendance": "/get-unknown-student-attendance/{calendarId}",
+    "attendance_save_user": "/attendance-save-user",
+    "delete_unknown_student_attendance": "/delete-unknown-student-attendance",
+    "get_attendance": "/get-attendance",
+    "update_attendance_student": "/update-attendance-student",
+    "attendance_get_group_student_select": "/attendance-get-group-student-select",
+    "get_list_add_student_attendance": "/list-add-student-attendance",
+    "save_user": "/attendance-save-user"
+
+  },
+  "config":{
+    "SECRET_KEY": "localhost123S",
+    "username": "40:c7:11:f9:ca:80",
+    "password": "bmax123"
+
+  }
+
+}

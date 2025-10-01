@@ -12,7 +12,13 @@
     <link href="/static/css/style2.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
+      <!-- Bootstrap 5 CSS -->
     
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
 </head>
 <style>
   body {
@@ -31,7 +37,7 @@
 
     <!-- Horizontal Navigation Menu -->
     <!--{% include 'navbar.html' %}-->
-
+      
 
     <!-- Main Content Area -->
     <div class="container-fluid main-content">
@@ -45,12 +51,12 @@
         
         </div>
     </div>
-<script>
+  <script>
         const mainTabletId = "{{ tablet_id }}";  // Changed name
         console.log("Active session page - Tablet ID:", mainTabletId);
 
         function checkSession() {
-          console.log(`[${new Date().toLocaleTimeString()}] Checking if session is still active...`);
+
 
           fetch(`/tablet/${encodeURIComponent(mainTabletId)}/check_session`)  // Use new name
             .then(response => {
@@ -75,11 +81,11 @@
         // Check immediately, then every 10 seconds
         checkSession();
         setInterval(checkSession, 10000);
-</script>
+  </script>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="/static/js/js_page_tablet.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="text/javascript" src="/static/js/js_page_tablet.js"></script>
 
 </body>
 </html>

@@ -296,7 +296,7 @@
     console.log("No-session page - Tablet ID:", tabletId);
 
     function checkForNewSession() {
-      console.log(`[${new Date().toLocaleTimeString()}] Checking for new session...`);
+
 
       fetch(`/tablet/${encodeURIComponent(tabletId)}/check_session`)
         .then(res => {
@@ -306,20 +306,20 @@
           return res.json();
         })
         .then(data => {
-          console.log(`[${new Date().toLocaleTimeString()}] Session status:`, data.status);
+
 
           // Only reload if there's an ACTIVE session
           if (data.status === 'active') {
-            console.log("Active session detected, switching to session page...");
+
             window.location.reload();
-          } else {
-            console.log("Still no active session, staying on no-session page");
+            
           }
         })
         .catch(err => console.error("Error checking for new session:", err));
     }
 
     // Check immediately, then every 30 seconds for new sessions
+    
     checkForNewSession();
     setInterval(checkForNewSession, 30000);
 </script>
