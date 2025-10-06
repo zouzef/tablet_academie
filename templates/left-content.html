@@ -61,11 +61,13 @@
                 <table id="attendanceTable">
                     <thead style="color: #4D44B5;">
                         <tr>
+                            <th>Delete</th>
                             <th>ID</th>
                             <th>User Name</th>
                             <th>Status</th>
                             <th>Note</th>
                             <th>Actions</th>
+
                         </tr>
                     </thead>
                     <tbody id="attendanceBody">
@@ -242,7 +244,9 @@
     // Initialize Socket.IO connection
     function initializeSocket() {
         socket = io();
-
+        socket.on('status', function(data) {
+            showNotification(data.message, 'warning');
+        });
         socket.on('connect', function() {
             console.log('Connected to server');
             updateConnectionStatus(true);
@@ -804,7 +808,7 @@ $(document).ready(function () {
                 checkbox2: checkbox2,
                 selectedGroupId: $('#change-group').val() // get selected group from dropdown if checkbox1 is checked
             };
-            console.log("groupId");
+
 
 
 
@@ -816,7 +820,7 @@ $(document).ready(function () {
                 data: JSON.stringify(requestData),
                 success: function(response) {
 
-                    alert("Student added successfully!");
+
                     $('#model-add-student').modal('hide'); // Close modal on success
                 },
 
@@ -839,7 +843,7 @@ $(document).ready(function () {
                 data: JSON.stringify(requestData),
                 success: function(response) {
 
-                    alert("Student added successfully!");
+
                     $('#model-add-student').modal('hide'); // Close modal on success
                 },
 
@@ -847,7 +851,7 @@ $(document).ready(function () {
         }
         if(checkbox1 && studentSelected){
             const selectedGroupId = $('#change-group').val();
-            alert(selectedGroupId);
+
             const requestData = {
                 userId: studentId,
                 calendarId: sessionId,
@@ -864,7 +868,7 @@ $(document).ready(function () {
                 data: JSON.stringify(requestData),
                 success: function(response) {
 
-                    alert("Student added successfully!");
+
                     $('#model-add-student').modal('hide'); // Close modal on success
                 },
 
@@ -964,7 +968,6 @@ $(document).ready(function () {
         color: white;
         padding: 4px 8px;
         border-radius: 4px;
-        font-weight: 500;
         font-size: 13px;
     }
 
@@ -1002,6 +1005,7 @@ $(document).ready(function () {
         background-color: #17a2b8;
         border-color: #17a2b8;
         color: white;
+
     }
 
     .loading {
@@ -1097,6 +1101,23 @@ $(document).ready(function () {
     let entriesPerPage = 8;
     let totalPages = 1;
 
+    function deleteStudent(userId) {
+        fetch(`/delete_attendance_api/${sessionId}/${userId}`)
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error("Failed to delete user");
+                }
+                return res.json();
+            })
+            .then(data => {
+                 showNotification('success deleting user', 'warning');
+            })
+            .catch(err => {
+                console.error("Error deleting user :", err);
+                showNotification('Error deleting user', 'warning');
+            });
+
+    }
     // REPLACE your existing renderAttendanceTable() function with this one
     function renderAttendanceTable() {
         const tbody = document.getElementById('attendanceBody');
@@ -1140,6 +1161,10 @@ $(document).ready(function () {
             const row = document.createElement('tr');
             row.setAttribute('data-attendance-id', item.id);
             row.innerHTML = `
+                <td>
+                    <i class="fa-solid fa-trash" style="font-size:20px;color:red;cursor:pointer" onclick="deleteStudent(${item.userId})"></i>
+
+                </td>
                 <td>${item.userId}</td>
                 <td>${item.userName}</td>
                 <td><div class="status ${statusClass}">${statusText}</div></td>

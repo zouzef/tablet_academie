@@ -12,8 +12,10 @@
                                     <button class="btn btn-sm btn-outline-secondary" id="nextBtn">&gt;</button>
                                 </div>
 
-                                <div id="calendar-grid"></div>
+                                <div id="calendar-grid">
+
                                 </div>
+                            </div>
 
                         </div>
                     </div>
@@ -23,7 +25,7 @@
 
                 <div class="summary-cards">
                     <div class="card mb-3 summary-card-purple">
-                        <div class="card-body">
+                        <div class="card-body2">
                             <h4 class="card-title">Scan for presence</h4>
                             <div id="qrcode"></div>
                         </div>
@@ -150,7 +152,7 @@
   generateCalendar(currentMonth, currentYear);
 
 
-  let path = "/api/students/12345"; // your path
+  let path = "/students/${studentId}"; // your path
   let fullUrl = window.location.origin + path; // make it a full URL if needed
 
   new QRCode(document.getElementById("qrcode"), {

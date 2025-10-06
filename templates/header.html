@@ -1,9 +1,17 @@
-<!-- Header -->
+<!-- ============================= -->
+<!-- HEADER SECTION -->
+<!-- ============================= -->
 <header class="top-header bg-white border-bottom">
     <div class="container-fluid">
-        <div class="d-flex justify-content-between align-items-center py-3">
-            <h1 class="h2 mb-0">Khalil Academie</h1>
+        <div class="d-flex justify-content-between align-items-center py-4">
             <div class="d-flex align-items-center">
+                <img src="" alt="Logo" width="70" height="65" id="academy-logo">
+            <h1 class="h2 mb-0" id="name-academie" style="padding-left: 5px;"></h1>
+
+            </div>
+
+            <div class="d-flex align-items-center">
+                <!-- Statistics Button -->
                 <div class="dropdown">
                     <button class="btn btn-outline-secondary d-flex align-items-center" type="button"
                         style="background-color: #5a47cf; color: white; border:none;"
@@ -12,20 +20,19 @@
                     </button>
                 </div>
 
-                <!--<div class="dropdown">
-                    <button class="btn btn-outline-secondary d-flex align-items-center" type="button" style="background-color: #28a745; color: white; border:none;" data-bs-toggle="modal" data-bs-target="#model-attendance-teacher">
-                        <i class="fas fa-user-check me-2"></i> Mark Teacher Attendance
-                    </button>
-                </div>-->
-
+                <!-- Unknown Students Button -->
                 <div class="dropdown">
-                    <button class="btn btn-outline-secondary d-flex align-items-center" type="button" style="background-color: rgb(253, 83, 83); color: white; border:none;" onclick="getUnknownStudent()">
+                    <button class="btn btn-outline-secondary d-flex align-items-center" type="button"
+                        style="background-color: rgb(253, 83, 83); color: white; border:none;"
+                        onclick="getUnknownStudent()">
                         <i class="fas fa-user-secret me-2"></i> Unknown Students
                     </button>
                 </div>
 
+                <!-- Reset Attendance Button -->
                 <div class="dropdown">
-                    <button class="btn btn-outline-secondary d-flex align-items-center" type="button" style="background-color: rgb(252, 205, 91); color: white; border:none;">
+                    <button class="btn btn-outline-secondary d-flex align-items-center" id="reset_attendance_id"
+                        type="button" style="background-color: rgb(252, 205, 91); color: white; border:none;">
                         <i class="fas fa-sync-alt me-2"></i> Reset Attendance
                     </button>
                 </div>
@@ -34,7 +41,11 @@
     </div>
 </header>
 
-<!-- Modal for statistic -->
+<!-- ============================= -->
+<!-- MODALS SECTION -->
+<!-- ============================= -->
+
+<!-- Statistics Modal -->
 <div class="modal fade" id="model-stat" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -52,15 +63,8 @@
   </div>
 </div>
 
-
-
-
-
-
-
-
-<!--model for the mark teacher attendance-->
-
+<!-- Teacher Attendance Modal (Commented Out) -->
+<!--
 <div class="modal fade" id="model-attendance-teacher" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -78,24 +82,24 @@
     </div>
   </div>
 </div>
+-->
 
-<!-- model for the unknown students-->
+<!-- Unknown Students Modal -->
 <div class="modal fade" id="model-unknown-student" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-xl"><!-- Added modal-xl -->
+  <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" style="color: rgb(77, 68, 181);">Unknown Students</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" style="background-color: rgb(248, 249, 250);">
-        
+        <!-- Dynamic content will be inserted here -->
       </div>
-
     </div>
   </div>
 </div>
 
-
+<!-- Set Known Student Modal -->
 <div class="modal fade" id="modal-set-known" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
@@ -118,7 +122,7 @@
                       </tbody>
                   </table>
               </div>
-                    
+
               <!-- Pagination Container -->
               <div class="pagination-container">
                   <div class="pagination-info" id="pagination-info">
@@ -131,16 +135,15 @@
                   </nav>
               </div>
             </div>
-            
           </div>
     </div>
 </div>
-<!-- Add this line with your other script imports -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 
-
-
+<!-- ============================= -->
+<!-- STYLES SECTION -->
+<!-- ============================= -->
 <style>
+    /* Button Styles */
     .btn-associate {
         background-color: #6f42c1;
         border-color: #6f42c1;
@@ -155,6 +158,32 @@
         border-color: #5a2d91;
         color: white;
     }
+
+    .btn-delete {
+        background-color: rgb(253, 83, 83);
+        color: #fff;
+        border: none;
+        padding: 6px 14px;
+        border-radius: 6px;
+        transition: background 0.2s ease;
+    }
+    .btn-delete:hover {
+        background-color: #c0392b;
+    }
+
+    .btn-unknown {
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        padding: 6px 14px;
+        border-radius: 6px;
+        transition: background 0.2s ease;
+    }
+    .btn-unknown:hover {
+        background-color: #28a7468f;
+    }
+
+    /* Table Styles */
     .table th {
         background-color: #f8f9fa;
         font-weight: 600;
@@ -179,6 +208,8 @@
     .table {
         margin-bottom: 0;
     }
+
+    /* Pagination Styles */
     .pagination-container {
         margin-top: 15px;
         display: flex;
@@ -195,37 +226,143 @@
     }
 </style>
 
-
-
+<!-- ============================= -->
+<!-- SCRIPTS SECTION -->
+<!-- ============================= -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 <script>
+// =============================
+// GLOBAL VARIABLES
+// =============================
+let attendanceChart; // Global chart reference for statistics
+let currentPage = 1; // Current page for pagination
+let studentsPerPage = 5; // Number of students per page
+let allStudents = []; // Array to store all students
+let currentFolder = ""; // Current folder path for unknown students
 
+// =============================
+// INITIALIZATION FUNCTIONS
+// =============================
 
-function delete_folder(folderPath = "") {
-  fetch('/api/delete-unknown-student-attendance', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      folder: folderPath,
-      calendarId: sessionId,   // ✅ consistent spelling
+/**
+ * Initialize the page when DOM is loaded
+ * Fetches academy name and sets up event listeners
+ */
+document.addEventListener("DOMContentLoaded", function () {
+    // Fetch academy data
+    fetch(`/get-data-account/${sessionId}`)
+    .then(res => {
+        if (!res.ok) {
+            throw new Error("Failed to load session data");
+        }
+        return res.json();
     })
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log('delete success:', data);
-  })
-  .catch(error => {
-    console.error('Error deleting folder:', error);
-  });
+    .then(response => {
+        if (response.data && response.data.length > 0) {
+            // Set the academy name from the first item
+            const academyName = response.data[0].name;
+            document.getElementById("name-academie").innerHTML = academyName;
+
+                // Set the dynamic logo image
+                const logoFilename = response.data[0].file_link; // e.g., "screenshot-20240923-103624-66f136ec8f029999937969.jpg"
+                if (logoFilename) {
+                    // Use the dynamic path for the image
+                    document.getElementById("academy-logo").src = `../static/assets/images/${logoFilename}`;
+
+                } else {
+                    console.log("No logo filename found in response");
+                }
+            } else {
+                console.log("No data found in API response");
+        }
+    })
+    .catch(error => {
+        console.error("Error fetching session data:", error);
+        showNotification("An error occurred while fetching attendance data.", "warning");
+    });
+
+    // Set up statistics modal event listener
+    document.getElementById("model-stat").addEventListener("shown.bs.modal", function () {
+        get_statics_attendance();
+    });
+
+    // Set up reset attendance button event listener
+    document.getElementById("reset_attendance_id").addEventListener("click", reset_attendance);
+});
+
+// =============================
+// STATISTICS FUNCTIONS
+// =============================
+
+/**
+ * Fetch attendance statistics and display chart
+ */
+function get_statics_attendance() {
+    fetch(`/get-statics-attendance/${sessionId}`)
+        .then(response => {
+            if (!response.ok) throw new Error("Network response was not ok");
+            return response.json();
+        })
+        .then(result => {
+            showAttendanceChart(result.data.present, result.data.absent);
+        })
+        .catch(err => {
+            console.error("Error fetching statics attendance:", err);
+            showNotification("An error occurred while fetching the statics attendance.", 'warning');
+        });
 }
 
+/**
+ * Display attendance statistics as a pie chart
+ * @param {number} present - Number of present students
+ * @param {number} absent - Number of absent students
+ */
+function showAttendanceChart(present, absent) {
+    const ctx = document.getElementById('attendanceChart').getContext('2d');
 
+    // Destroy existing chart if opened multiple times
+    if (attendanceChart) {
+        attendanceChart.destroy();
+    }
+
+    attendanceChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Present', 'Absent'],
+            datasets: [{
+                data: [present, absent],
+                backgroundColor: ['#a0e7e5', '#ffb3b3'],
+                borderColor: ['#5adbb5', '#ff6b6b'],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            let value = context.raw || 0;
+                            return `${label}: ${value}`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+// =============================
+// UNKNOWN STUDENTS FUNCTIONS
+// =============================
+
+/**
+ * Fetch and display unknown students in a modal
+ */
 function getUnknownStudent() {
     fetch(`/api/show-attendance-unknown/${sessionId}`)
         .then(res => {
@@ -235,33 +372,7 @@ function getUnknownStudent() {
             return res.json();
         })
         .then(data => {
-            // keep your original line (commented for now)
-             const grouped = data["unknownFilesGrouped"];
-
-            // ✅ Fake test data
-            /*const grouped = {
-                "folder/path/1": [
-                    { url: "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg", filename: "file1.jpg", type: "image" },
-                    { url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTefdAYZ6uy2rn4ODl9zSL1KwCAhiEPo9Xm-g&s", filename: "file2.jpg", type: "image" }
-                ],
-
-                "folder/path/3": [
-                    { url: "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg", filename: "file1.jpg", type: "image" },
-                    { url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTefdAYZ6uy2rn4ODl9zSL1KwCAhiEPo9Xm-g&s", filename: "file2.jpg", type: "image" }
-                ],
-                "folder/path/4": [
-                    { url: "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg", filename: "file1.jpg", type: "image" },
-                    { url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTefdAYZ6uy2rn4ODl9zSL1KwCAhiEPo9Xm-g&s", filename: "file2.jpg", type: "image" }
-                ],
-                "folder/path/5": [
-                    { url: "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg", filename: "file1.jpg", type: "image" },
-                    { url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTefdAYZ6uy2rn4ODl9zSL1KwCAhiEPo9Xm-g&s", filename: "file2.jpg", type: "image" }
-                ],
-                "folder/path/6": [
-                    { url: "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg", filename: "file1.jpg", type: "image" },
-                    { url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTefdAYZ6uy2rn4ODl9zSL1KwCAhiEPo9Xm-g&s", filename: "file2.jpg", type: "image" }
-                ],
-            };*/
+            const grouped = data["unknownFilesGrouped"];
 
             if (!grouped || Object.keys(grouped).length === 0) {
                 showNotification('No unknown students found', 'info');
@@ -269,77 +380,11 @@ function getUnknownStudent() {
             }
 
             const modalBody = document.querySelector("#model-unknown-student .modal-body");
-            modalBody.innerHTML = ""; // clear old content
+            modalBody.innerHTML = ""; // Clear old content
 
+            // Create UI for each folder of unknown students
             for (const folder in grouped) {
-                const folderDiv = document.createElement("div");
-                folderDiv.classList.add("mb-4");
-
-                // Folder header with title + buttons
-                const headerDiv = document.createElement("div");
-                headerDiv.classList.add("d-flex", "justify-content-between", "align-items-center", "mb-2");
-
-                const title = document.createElement("h6");
-                title.textContent = folder;
-                title.classList.add("fw-bold", "mb-0");
-
-                const buttonGroup = document.createElement("div");
-
-                // Delete button with trash icon
-                const deleteBtn = document.createElement("button");
-                deleteBtn.innerHTML = `Delete`;
-                deleteBtn.classList.add("btn", "btn-sm", "btn-danger", "me-2", "btn-delete");
-                deleteBtn.onclick = () => {
-                    showNotification(`Delete clicked for ${folder}`, "warning");
-                    delete_folder(folder);
-
-                    // TODO: call your API delete here
-
-                };
-
-                // Set Known button with user-plus icon
-                const setKnownBtn = document.createElement("button");
-                setKnownBtn.innerHTML = `Set Known <i class="fa-solid fa-user-plus ms-1"></i>`;
-                setKnownBtn.classList.add("btn", "btn-sm", "btn-primary", "btn-unknown");
-                setKnownBtn.onclick = () => {
-                    showNotification(`Set Known clicked for ${folder}`, "info");
-                    // TODO: call your API set-known here
-                    get_list_unknown_students(folder);
-
-                     const setKnownModal = new bootstrap.Modal(document.getElementById("modal-set-known"));
-                      setKnownModal.show();
-                };
-
-                buttonGroup.appendChild(deleteBtn);
-                buttonGroup.appendChild(setKnownBtn);
-
-                headerDiv.appendChild(title);
-                headerDiv.appendChild(buttonGroup);
-
-                folderDiv.appendChild(headerDiv);
-
-                // Add horizontal line below header
-                const hr = document.createElement("hr");
-                folderDiv.appendChild(hr);
-
-                // File row
-                const fileRow = document.createElement("div");
-                fileRow.classList.add("d-flex", "flex-wrap", "gap-3");
-
-                grouped[folder].forEach(file => {
-                    if (file.type === "image") {
-                        const mediaEl = document.createElement("img");
-                        mediaEl.src = file.url;
-                        mediaEl.alt = file.filename;
-                        mediaEl.style.width = "200px";
-                        mediaEl.style.height = "200px";
-                        mediaEl.style.objectFit = "cover";
-                        mediaEl.classList.add("rounded", "shadow");
-                        fileRow.appendChild(mediaEl);
-                    }
-                });
-
-                folderDiv.appendChild(fileRow);
+                const folderDiv = createFolderUI(folder, grouped[folder]);
                 modalBody.appendChild(folderDiv);
             }
 
@@ -353,367 +398,423 @@ function getUnknownStudent() {
         });
 }
 
+/**
+ * Create UI for a folder of unknown students
+ * @param {string} folder - Folder path
+ * @param {Array} files - Array of file objects
+ * @returns {HTMLElement} - Folder UI element
+ */
+function createFolderUI(folder, files) {
+    const folderDiv = document.createElement("div");
+    folderDiv.classList.add("mb-4");
 
+    // Folder header with title + buttons
+    const headerDiv = document.createElement("div");
+    headerDiv.classList.add("d-flex", "justify-content-between", "align-items-center", "mb-2");
 
-  let attendanceChart; // global chart reference
+    const title = document.createElement("h6");
+    title.textContent = folder;
+    title.classList.add("fw-bold", "mb-0");
 
-    function showAttendanceChart(present, absent) {
-        
-        const ctx = document.getElementById('attendanceChart').getContext('2d');
+    const buttonGroup = document.createElement("div");
 
-        // Destroy existing chart if opened multiple times
-        if (attendanceChart) {
-            attendanceChart.destroy();
+    // Delete button
+    const deleteBtn = document.createElement("button");
+    deleteBtn.innerHTML = `Delete`;
+    deleteBtn.classList.add("btn", "btn-sm", "btn-danger", "me-2", "btn-delete");
+    deleteBtn.onclick = () => {
+        showNotification(`Delete clicked for ${folder}`, "warning");
+        delete_folder(folder);
+    };
+
+    // Set Known button
+    const setKnownBtn = document.createElement("button");
+    setKnownBtn.innerHTML = `Set Known <i class="fa-solid fa-user-plus ms-1"></i>`;
+    setKnownBtn.classList.add("btn", "btn-sm", "btn-primary", "btn-unknown");
+    setKnownBtn.onclick = () => {
+        showNotification(`Set Known clicked for ${folder}`, "info");
+        get_list_unknown_students(folder);
+        const setKnownModal = new bootstrap.Modal(document.getElementById("modal-set-known"));
+        setKnownModal.show();
+    };
+
+    buttonGroup.appendChild(deleteBtn);
+    buttonGroup.appendChild(setKnownBtn);
+    headerDiv.appendChild(title);
+    headerDiv.appendChild(buttonGroup);
+    folderDiv.appendChild(headerDiv);
+
+    // Add horizontal line below header
+    const hr = document.createElement("hr");
+    folderDiv.appendChild(hr);
+
+    // File row
+    const fileRow = document.createElement("div");
+    fileRow.classList.add("d-flex", "flex-wrap", "gap-3");
+
+    // Add image files
+    files.forEach(file => {
+        if (file.type === "image") {
+            const mediaEl = document.createElement("img");
+            mediaEl.src = file.url;
+            mediaEl.alt = file.filename;
+            mediaEl.style.width = "200px";
+            mediaEl.style.height = "200px";
+            mediaEl.style.objectFit = "cover";
+            mediaEl.classList.add("rounded", "shadow");
+            fileRow.appendChild(mediaEl);
         }
-
-        attendanceChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Present', 'Absent'],
-                datasets: [{
-                    data: [present, absent],
-                    backgroundColor: ['#a0e7e5', '#ffb3b3'], // colors
-                    borderColor: ['#5adbb5', '#ff6b6b'],
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.label || '';
-                                let value = context.raw || 0;
-                                return `${label}: ${value}`;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    document.getElementById("model-stat").addEventListener("shown.bs.modal", function () {
-
-        showAttendanceChart(present_students, absent_students);
-
     });
 
+    folderDiv.appendChild(fileRow);
+    return folderDiv;
+}
 
+// =============================
+// FOLDER MANAGEMENT FUNCTIONS
+// =============================
 
-
-
- let currentPage = 1;
-        let studentsPerPage = 5;
-        let allStudents = [];
-
-        // Your updated function to get list of unknown students
-        function get_list_unknown_students(folderPath = "") {
-           currentFolder = folderPath;
-            fetch(`/api/get-unknown-student-attendance/${sessionId}`)
-                .then(res => {
-                    if (!res.ok) {
-                        throw new Error("Failed to load unknown students");
-                    }
-                    return res.json();
-                })
-                .then(data => {
-                    console.log("Unknown Students Data:", data);
-                    if (data.success && data.students) {
-                        allStudents = data.students;
-                        displayStudents();
-                    } else {
-                        console.error("No students data found");
-                        displayNoStudents();
-                    }
-                })
-                .catch(err => {
-                    console.error("Error fetching unknown students:", err);
-                    displayError();
-                });
+/**
+ * Delete a folder of unknown student attendance
+ * @param {string} folderPath - Path of the folder to delete
+ */
+function delete_folder(folderPath = "") {
+    fetch('/api/delete-unknown-student-attendance', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            folder: folderPath,
+            calendarId: sessionId,
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
+        return response.json();
+    })
+    .then(data => {
+        console.log('delete success:', data);
+    })
+    .catch(error => {
+        console.error('Error deleting folder:', error);
+    });
+}
 
-        // Function to display students with pagination
-        function displayStudents() {
-            const tableBody = document.getElementById('students-table-body');
-            const totalStudents = allStudents.length;
-            const totalPages = Math.ceil(totalStudents / studentsPerPage);
-            
-            // Calculate start and end indices for current page
-            const startIndex = (currentPage - 1) * studentsPerPage;
-            const endIndex = Math.min(startIndex + studentsPerPage, totalStudents);
-            
-            // Get students for current page
-            const studentsToShow = allStudents.slice(startIndex, endIndex);
-            
-            // Clear existing content
-            tableBody.innerHTML = '';
-            
-            // Add student rows
-            studentsToShow.forEach(student => {
-                const row = createStudentRow(student);
-                tableBody.appendChild(row);
-            });
-            
-            // Update pagination
-            updatePagination(totalStudents, totalPages);
-        }
+// =============================
+// STUDENT MANAGEMENT FUNCTIONS
+// =============================
 
-        // Function to create a student row
-        function createStudentRow(student) {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td class="student-name">${student.name}</td>
-                <td class="student-email">${student.email}</td>
-                <td>
-                    <button type="button" class="btn btn-associate" 
-                            onclick="associateStudent(${student.id}, ${student.attendanceId})">
-                        Associate
-                    </button>
-                </td>
-            `;
-            return row;
-        }
-
-        // Function to update pagination controls
-        function updatePagination(totalStudents, totalPages) {
-            const paginationInfo = document.getElementById('pagination-info');
-            const paginationControls = document.getElementById('pagination-controls');
-            
-            // Update info text
-            const startIndex = (currentPage - 1) * studentsPerPage + 1;
-            const endIndex = Math.min(currentPage * studentsPerPage, totalStudents);
-            paginationInfo.textContent = `Showing ${startIndex}-${endIndex} of ${totalStudents} students`;
-            
-            // Clear existing pagination controls
-            paginationControls.innerHTML = '';
-            
-            // Don't show pagination if only one page
-            if (totalPages <= 1) return;
-            
-            // Previous button
-            const prevButton = createPaginationButton('Previous', currentPage > 1, () => {
-                if (currentPage > 1) {
-                    currentPage--;
-                    displayStudents();
-                }
-            });
-            paginationControls.appendChild(prevButton);
-            
-            // Page numbers
-            for (let i = 1; i <= totalPages; i++) {
-                const pageButton = createPaginationButton(i.toString(), true, () => {
-                    currentPage = i;
-                    displayStudents();
-                }, i === currentPage);
-                paginationControls.appendChild(pageButton);
+/**
+ * Fetch list of unknown students for a folder
+ * @param {string} folderPath - Folder path
+ */
+function get_list_unknown_students(folderPath = "") {
+    currentFolder = folderPath;
+    fetch(`/api/get-unknown-student-attendance/${sessionId}`)
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("Failed to load unknown students");
             }
-            
-            // Next button
-            const nextButton = createPaginationButton('Next', currentPage < totalPages, () => {
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    displayStudents();
-                }
-            });
-            paginationControls.appendChild(nextButton);
-        }
-
-        // Function to create pagination button
-        function createPaginationButton(text, enabled, onClick, isActive = false) {
-            const li = document.createElement('li');
-            li.className = `page-item ${!enabled ? 'disabled' : ''} ${isActive ? 'active' : ''}`;
-            
-            const button = document.createElement('button');
-            button.className = 'page-link';
-            button.textContent = text;
-            button.disabled = !enabled;
-            
-            if (enabled) {
-                button.addEventListener('click', onClick);
+            return res.json();
+        })
+        .then(data => {
+            console.log("Unknown Students Data:", data);
+            if (data.success && data.students) {
+                allStudents = data.students;
+                displayStudents();
+            } else {
+                console.error("No students data found");
+                displayNoStudents();
             }
-            
-            li.appendChild(button);
-            return li;
-        }
+        })
+        .catch(err => {
+            console.error("Error fetching unknown students:", err);
+            displayError();
+        });
+}
 
-        // Function to handle associate button click
-        function associateStudent(studentId, attendanceId) {
-            
-            console.log(`Associating student ID: ${studentId}, Attendance ID: ${attendanceId}`);
-            
-            // You'll need to define these variables based on your application context
-            const folder = currentFolder;
-            const calenderId = sessionId; // Replace with actual calendar ID
-            
-            // Show loading state on the button
-            const button = event.target;
-            const originalText = button.textContent;
-            button.textContent = 'Associating...';
-            button.disabled = true;
-            
-            // Make API call to associate student
-            fetch('/api/associate-known-student-attendance', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    userid: studentId,
-                    folder: folder,
-                    calenderId: calenderId,
-                    attendanceid: attendanceId
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Association successful:', data);
-                if (data.success) {
-                    // Show success message
-                    button.textContent = 'Associated!';
-                    button.classList.remove('btn-associate');
-                    button.classList.add('btn-success');
-                    
-                    // Optional: Remove the student from the list after successful association
-                    setTimeout(() => {
-                        removeStudentFromList(studentId);
-                    }, 1000);
-                } else {
-                    throw new Error(data.error || 'Association failed');
-                }
-            })
-            .catch(error => {
-                console.error('Error associating student:', error);
-                
-                // Show error message
-                button.textContent = 'Error!';
-                button.classList.remove('btn-associate');
-                button.classList.add('btn-danger');
-                
-                // Reset button after 3 seconds
-                setTimeout(() => {
-                    button.textContent = originalText;
-                    button.classList.remove('btn-danger');
-                    button.classList.add('btn-associate');
-                    button.disabled = false;
-                }, 3000);
-                
-                // Show user-friendly error message
-                alert('Failed to associate student. Please try again.');
-            });
-        }
-        
-        // Function to remove student from list after successful association
-        function removeStudentFromList(studentId) {
-            allStudents = allStudents.filter(student => student.id !== studentId);
-            
-            // Adjust current page if necessary
-            const totalPages = Math.ceil(allStudents.length / studentsPerPage);
-            if (currentPage > totalPages && totalPages > 0) {
-                currentPage = totalPages;
-            }
-            
-            // Refresh the display
+/**
+ * Display students with pagination
+ */
+function displayStudents() {
+    const tableBody = document.getElementById('students-table-body');
+    const totalStudents = allStudents.length;
+    const totalPages = Math.ceil(totalStudents / studentsPerPage);
+
+    // Calculate start and end indices for current page
+    const startIndex = (currentPage - 1) * studentsPerPage;
+    const endIndex = Math.min(startIndex + studentsPerPage, totalStudents);
+
+    // Get students for current page
+    const studentsToShow = allStudents.slice(startIndex, endIndex);
+
+    // Clear existing content
+    tableBody.innerHTML = '';
+
+    // Add student rows
+    studentsToShow.forEach(student => {
+        const row = createStudentRow(student);
+        tableBody.appendChild(row);
+    });
+
+    // Update pagination
+    updatePagination(totalStudents, totalPages);
+}
+
+/**
+ * Create a table row for a student
+ * @param {Object} student - Student object
+ * @returns {HTMLElement} - Table row element
+ */
+function createStudentRow(student) {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td class="student-name">${student.name}</td>
+        <td class="student-email">${student.email}</td>
+        <td>
+            <button type="button" class="btn btn-associate"
+                    onclick="associateStudent(${student.id}, ${student.attendanceId})">
+                Associate
+            </button>
+        </td>
+    `;
+    return row;
+}
+
+/**
+ * Update pagination controls
+ * @param {number} totalStudents - Total number of students
+ * @param {number} totalPages - Total number of pages
+ */
+function updatePagination(totalStudents, totalPages) {
+    const paginationInfo = document.getElementById('pagination-info');
+    const paginationControls = document.getElementById('pagination-controls');
+
+    // Update info text
+    const startIndex = (currentPage - 1) * studentsPerPage + 1;
+    const endIndex = Math.min(currentPage * studentsPerPage, totalStudents);
+    paginationInfo.textContent = `Showing ${startIndex}-${endIndex} of ${totalStudents} students`;
+
+    // Clear existing pagination controls
+    paginationControls.innerHTML = '';
+
+    // Don't show pagination if only one page
+    if (totalPages <= 1) return;
+
+    // Previous button
+    const prevButton = createPaginationButton('Previous', currentPage > 1, () => {
+        if (currentPage > 1) {
+            currentPage--;
             displayStudents();
         }
+    });
+    paginationControls.appendChild(prevButton);
 
-        // Function to display when no students found
-        function displayNoStudents() {
-            const tableBody = document.getElementById('students-table-body');
-            tableBody.innerHTML = `
-                <tr>
-                    <td colspan="3" class="text-center text-muted py-4">
-                        No unknown students found
-                    </td>
-                </tr>
-            `;
-            document.getElementById('pagination-info').textContent = '';
-            document.getElementById('pagination-controls').innerHTML = '';
+    // Page numbers
+    for (let i = 1; i <= totalPages; i++) {
+        const pageButton = createPaginationButton(i.toString(), true, () => {
+            currentPage = i;
+            displayStudents();
+        }, i === currentPage);
+        paginationControls.appendChild(pageButton);
+    }
+
+    // Next button
+    const nextButton = createPaginationButton('Next', currentPage < totalPages, () => {
+        if (currentPage < totalPages) {
+            currentPage++;
+            displayStudents();
         }
+    });
+    paginationControls.appendChild(nextButton);
+}
 
-        // Function to display error message
-        function displayError() {
-            const tableBody = document.getElementById('students-table-body');
-            tableBody.innerHTML = `
-                <tr>
-                    <td colspan="3" class="text-center text-danger py-4">
-                        Error loading students. Please try again.
-                    </td>
-                </tr>
-            `;
-            document.getElementById('pagination-info').textContent = '';
-            document.getElementById('pagination-controls').innerHTML = '';
+/**
+ * Create a pagination button
+ * @param {string} text - Button text
+ * @param {boolean} enabled - Whether the button is enabled
+ * @param {Function} onClick - Click handler function
+ * @param {boolean} isActive - Whether the button is active
+ * @returns {HTMLElement} - Pagination button element
+ */
+function createPaginationButton(text, enabled, onClick, isActive = false) {
+    const li = document.createElement('li');
+    li.className = `page-item ${!enabled ? 'disabled' : ''} ${isActive ? 'active' : ''}`;
+
+    const button = document.createElement('button');
+    button.className = 'page-link';
+    button.textContent = text;
+    button.disabled = !enabled;
+
+    if (enabled) {
+        button.addEventListener('click', onClick);
+    }
+
+    li.appendChild(button);
+    return li;
+}
+
+/**
+ * Display message when no students found
+ */
+function displayNoStudents() {
+    const tableBody = document.getElementById('students-table-body');
+    tableBody.innerHTML = `
+        <tr>
+            <td colspan="3" class="text-center text-muted py-4">
+                No unknown students found
+            </td>
+        </tr>
+    `;
+    document.getElementById('pagination-info').textContent = '';
+    document.getElementById('pagination-controls').innerHTML = '';
+}
+
+/**
+ * Display error message
+ */
+function displayError() {
+    const tableBody = document.getElementById('students-table-body');
+    tableBody.innerHTML = `
+        <tr>
+            <td colspan="3" class="text-center text-danger py-4">
+                Error loading students. Please try again.
+            </td>
+        </tr>
+    `;
+    document.getElementById('pagination-info').textContent = '';
+    document.getElementById('pagination-controls').innerHTML = '';
+}
+
+// =============================
+// STUDENT ASSOCIATION FUNCTIONS
+// =============================
+
+/**
+ * Associate a student with attendance data
+ * @param {number} studentId - Student ID
+ * @param {number} attendanceId - Attendance ID
+ */
+function associateStudent(studentId, attendanceId) {
+    console.log(`Associating student ID: ${studentId}, Attendance ID: ${attendanceId}`);
+
+    // Show loading state on the button
+    const button = event.target;
+    const originalText = button.textContent;
+    button.textContent = 'Associating...';
+    button.disabled = true;
+
+    // Make API call to associate student
+    fetch('/api/associate-known-student-attendance', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            userid: studentId,
+            folder: currentFolder,
+            calenderId: sessionId,
+            attendanceid: attendanceId
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Association successful:', data);
+        if (data.success) {
+            // Show success message
+            button.textContent = 'Associated!';
+            button.classList.remove('btn-associate');
+            button.classList.add('btn-success');
 
-        // Example usage - call this when modal opens or when you need to refresh data
-        // Note: You'll need to define sessionId in your actual implementation
-        // get_list_unknown_students();
+            // Remove the student from the list after successful association
+            setTimeout(() => {
+                removeStudentFromList(studentId);
+            }, 1000);
+        } else {
+            throw new Error(data.error || 'Association failed');
+        }
+    })
+    .catch(error => {
+        console.error('Error associating student:', error);
 
+        // Show error message
+        button.textContent = 'Error!';
+        button.classList.remove('btn-associate');
+        button.classList.add('btn-danger');
 
+        // Reset button after 3 seconds
+        setTimeout(() => {
+            button.textContent = originalText;
+            button.classList.remove('btn-danger');
+            button.classList.add('btn-associate');
+            button.disabled = false;
+        }, 3000);
 
+        // Show user-friendly error message
+        alert('Failed to associate student. Please try again.');
+    });
+}
 
+/**
+ * Remove student from list after successful association
+ * @param {number} studentId - Student ID to remove
+ */
+function removeStudentFromList(studentId) {
+    allStudents = allStudents.filter(student => student.id !== studentId);
 
+    // Adjust current page if necessary
+    const totalPages = Math.ceil(allStudents.length / studentsPerPage);
+    if (currentPage > totalPages && totalPages > 0) {
+        currentPage = totalPages;
+    }
 
+    // Refresh the display
+    displayStudents();
+}
 
+// =============================
+// ATTENDANCE MANAGEMENT FUNCTIONS
+// =============================
 
+/**
+ * Reset attendance data
+ */
+function reset_attendance() {
+    fetch(`/reset_attendance_api/${sessionId}`)
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("Failed to reset attendance");
+            }
+            return res.json();
+        })
+        .then(data => {
+            console.log("Attendance reset successfully");
+        })
+        .catch(err => {
+            console.error("Error resetting attendance:", err);
+        });
+}
 
+// =============================
+// UTILITY FUNCTIONS
+// =============================
 
+/**
+ * Show notification (placeholder function - implement as needed)
+ * @param {string} message - Notification message
+ * @param {string} type - Notification type
+ */
+function showNotification(message, type) {
+    // Implementation depends on your notification system
+    console.log(`${type.toUpperCase()}: ${message}`);
+    // You might use Toast, SweetAlert, or custom notification here
+}
 </script>
-
-
-
-<style>
-  .btn-delete {
-  background-color: rgb(253, 83, 83);
-  color: #fff;
-  border: none;
-  padding: 6px 14px;
-  border-radius: 6px;
-  transition: background 0.2s ease;
-}
-
-.btn-delete:hover {
-  background-color: #c0392b;
-}
-
-.btn-unknown {
-  background-color: #28a745;
-  color: #fff;
-  border: none;
-  padding: 6px 14px;
-  border-radius: 6px;
-  transition: background 0.2s ease;
-}
-
-.btn-unknown:hover {
-  background-color: #28a7468f;
-}
-
-
-
-
-</style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

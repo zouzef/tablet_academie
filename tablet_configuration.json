@@ -12,8 +12,11 @@
     "update_attendance_student": "/update-attendance-student",
     "attendance_get_group_student_select": "/attendance-get-group-student-select",
     "get_list_add_student_attendance": "/list-add-student-attendance",
-    "save_user": "/attendance-save-user"
-
+    "save_user": "/attendance-save-user",
+    "reset_attendance_api": "/reset_attendance",
+    "delete_attendance_api": "/delete_attendance_api",
+    "get_statics_attendance": "/static_attendance",
+    "get_data_account": "/data_account"
   },
   "config":{
     "SECRET_KEY": "localhost123S",

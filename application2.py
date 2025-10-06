@@ -6,6 +6,9 @@ import json
 from datetime import datetime, timedelta
 import threading
 import time
+
+
+
 from login import *
 
 # ============= Configuration and Initialization =============
@@ -112,7 +115,7 @@ def change_stutatus(id_attendance):
         headers = {"Authorization": f"Bearer {token}"}
         payload = {"status": True}
         endpoint2 = config["url"]["update_attendance_student"]
-        url2 = f"{base_url}/{endpoint2}/{id_attendance}"
+        url2 = f"{base_url}{endpoint2}/{id_attendance}"
         response = requests.post(url2, headers=headers, data=payload, verify=False)
         response.raise_for_status()
         return response.json()
@@ -403,6 +406,29 @@ def change_status_student(id_attendance):
         return jsonify({"status": "error", "message": str(e)}), 400
 
 
+#get statics about attendance
+@app.route('/get-statics-attendance/<int:calender_id>')
+def get_statics_attendance(calender_id):
+    try:
+        url=f"{base_url}{config['url']['get_statics_attendance']}/{calender_id}"
+        headers={
+            "Authorization": f"Bearer {token}"
+        }
+
+        response=requests.get(url,headers=headers,verify=False)
+        response.raise_for_status()
+        print(response.status_code)
+        return response.json()
+
+    except Exception as e:
+        print(f"DEBUG:Error {e} coming from get_statics_attendance")
+        return jsonify({"status":"error","message":str(e)}),500
+
+
+
+
+
+
 # ----- Student Management Endpoints -----
 @app.route('/api/show-attendance-unknown/<int:calenderId>')
 def get_unknown_student(calenderId):
@@ -435,6 +461,7 @@ def get_unknown_student_attendance(calendarId):
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 
+@socketio.on('some_event')
 @app.route('/api/add-student-attendance', methods=['POST'])
 def add_student_attendance():
     try:
@@ -443,7 +470,6 @@ def add_student_attendance():
         user_id = data.get('userId')  # required
         calendar_id = data.get('calendarId')  # required
         group_id = data.get('groupId')
-        print(group_id)  # optional
         relation_id = data.get('relationId')  # optional
         checkbox1_checked = data.get('checkbox1', False)
         checkbox2_checked = data.get('checkbox2', False)
@@ -493,7 +519,7 @@ def add_student_attendance():
         }
 
         # Remove None values from payload to avoid sending null values
-        payload = {k: v for k, v in payload.items() if v is not None}
+        #payload = {k: v for k, v in payload.items() if v is not None}
 
         # Call the external API
         url = f"{base_url}{config['url']['save_user']}"
@@ -503,14 +529,23 @@ def add_student_attendance():
             json=payload,
             verify=False
         )
-        response.raise_for_status()  # raise exception if status != 2xx
+        response.raise_for_status()
 
-        # ✅ FIXED: Return success response
+
+        if response.json().get('success') == False:
+            socketio.emit('status', {'message': 'There is no Place for this student'})
+
         return jsonify({
             "success": True,
             "message": "Student attendance added successfully",
-            "data": response.json()  # Forward the response from the external API
+            "data": response.json()
         })
+
+
+
+    except requests.exceptions.HTTPError as e:
+
+        socketio.emit('status', {'message': f'HTTP Error: {str(e)}'}, namespace='/')
 
     except requests.exceptions.HTTPError as e:
         # ✅ FIXED: Use getattr to safely access response.status_code
@@ -606,6 +641,8 @@ def save_user(userId,calenderId,groupId,relationId,addToGroup,selecedGroupId,joi
         }
         response = requests.post("https://www.unistudious.com/slc/attendance-save-user",headers=headers,data=payload)
         response.raise_for_status()
+
+
         return response.status_code
 
     except Exception as e:
@@ -622,14 +659,58 @@ def get_current_group(calendarId,userId):
         url=f"{base_url}{config['url']['attendance_get_group_student_select']}/{calendarId}/{userId}"
         response = requests.get(url,headers=headers,verify=False)
         response.raise_for_status()
-
-        print("\n \n \n \n \n \n \n \nGroup :",response.json(),"\n \n \n \n \n \n \n \n \n \n \n \n")
         return response.json()
-
 
     except Exception as e:
         print("DEBUG: Exception in get_current_group:",e)
         return 404
+
+
+#reset all_all_attendance
+@app.route("/reset_attendance_api/<int:calander_id>")
+def reset_attendance_api(calander_id):
+    try:
+        url=f"{base_url}{config['url']['reset_attendance_api']}/{calander_id}"
+        headers={
+            "Authorization": f"Bearer {token}"
+        }
+        response = requests.get(url,headers=headers,verify=False)
+        response.raise_for_status()
+        if(response.status_code == 200):
+            socketio.emit('reset_attendance', {'message': 'Reset attendance triggered'})
+            return jsonify({"status":"success","Message":"success from resert_attendance_api"}),200
+
+    except Exception as e:
+        print("DEBUG:Error {e} come from resert_attendance_api")
+        return jsonify({"status":"Error","Message":"error from resert_attendance_api"}),300
+
+
+#delete attendance
+
+@app.route("/delete_attendance_api/<int:calander_id>/<int:user_id>")
+def delete_attendance_api(calander_id,user_id):
+    try:
+        url=f"{base_url}{config['url']['delete_attendance_api']}/{calander_id}/{user_id}"
+        print(calander_id,user_id)
+        headers={
+            "Authorization": f"Bearer {token}"
+        }
+        response=requests.get(url,headers=headers,verify=False)
+        response.raise_for_status()
+
+        if(response.status_code == 200):
+            socketio.emit('delete_attendance', {'message': 'Delete attendance triggered'})
+            return jsonify({"status":"success","Message":"success from delete_attendance_api"}),200
+
+
+    except Exception as e:
+        print("DEBUG:Error {e} come from delete_attendance_api")
+        return jsonify({"status":"Error","Message":"error from delete_attendance_api"}),300
+
+
+
+
+
 
 
 # ----- Testing/Debug Endpoints -----
@@ -642,13 +723,42 @@ def trigger_update(session_id):
     }, room=f'session_{session_id}')
     return jsonify({"status": "success", "message": "Update triggered"})
 
+
+
+
+
+# ----- Getting account data Endpoints -----
+@app.route('/get-data-account/<int:calander_id>')
+def get_data_account(calander_id):
+    try:
+        url=f"{base_url}{config['url']['get_data_account']}/{calander_id}"
+        headers={
+            "Authorization": f"Bearer {token}"
+        }
+        response=requests.get(url,headers=headers,verify=False)
+        response.raise_for_status()
+        print(response.json())
+        if(response.status_code==200):
+            return jsonify(response.json())
+        else:
+            return jsonify({"status": "error"})
+    except Exception as e :
+        print(f"DEBUG:Error {e} come from get_data_account")
+        return jsonify({"status":"Error","Message":"error from get_data_account"}),300
+
+
+
+
+
+
+
 # ============= Main Application Entry =============
 if __name__ == "__main__":
     print(token)
     start_background_tasks()
     socketio.run(app,
                 host="0.0.0.0",
-                port=5008,
+                port=5010,
                 debug=True,
                 ssl_context=('cert.pem', 'key.pem'),
                 allow_unsafe_werkzeug=True)
