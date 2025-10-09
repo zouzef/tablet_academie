@@ -42,12 +42,13 @@ body {
 /* Full Width Header Styles */
 .top-header {
    
-    padding: 10px;
+    padding: 5px;
     position: sticky;
     top: 0;
     z-index: 1000;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    height: 110px;
+
+
 }
 
 .top-header h1 {
@@ -155,6 +156,7 @@ body {
 
 .card-body {
     padding: 20px;
+    height: fit-content;
 }
 
 
@@ -165,6 +167,7 @@ body {
     align-items: center;         /* horizontal center */
     justify-content: center;     /* vertical center */
     text-align: center;          /* center text inside elements */
+    color:black
 }
 
 /* Form Styles */
@@ -462,6 +465,7 @@ td>span{
     }
     
     .card-body {
+
         width: 80%;
         padding: 15px;
     }
@@ -580,10 +584,14 @@ td>span{
     }
 
     td > .btn-present {
+        height:45px;
+        width:140px;
         background-color: #5a47cf; /* Purple */
     }
 
     td > .btn-note {
+        height:45px;
+        width:140px;
         background-color: rgb(38, 185, 177); /* Teal */
     }
 
@@ -611,13 +619,14 @@ td>span{
 }
 
 .summary-cards .card {
-    border: none;
+
     border-radius: 10px;
     padding: 0;
 }
 
 .summary-card-purple {
-    background-color: #5a47cf; /* Purple */
+    border:solid 1px rgb(199, 210, 254);
+    background-color:  #EEF2FF; /* Purple */
     color: white;
 }
 
@@ -646,6 +655,7 @@ td>span{
     font-size: 1.4rem;
     font-weight: bold;
     margin: 0;
+
 }
 
 .summary-cards p {

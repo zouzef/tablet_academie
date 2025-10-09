@@ -6,10 +6,12 @@ import json
 from datetime import datetime, timedelta
 import threading
 import time
-
-
-
 from login import *
+
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+
 
 # ============= Configuration and Initialization =============
 def load_config():
@@ -518,9 +520,6 @@ def add_student_attendance():
             "joinToGroup": join_to_group
         }
 
-        # Remove None values from payload to avoid sending null values
-        #payload = {k: v for k, v in payload.items() if v is not None}
-
         # Call the external API
         url = f"{base_url}{config['url']['save_user']}"
         response = requests.post(
@@ -531,30 +530,24 @@ def add_student_attendance():
         )
         response.raise_for_status()
 
-
         if response.json().get('success') == False:
-            socketio.emit('status', {'message': 'There is no Place for this student'})
+            socketio.emit('status', {'message': '🎯There is no Place for this student'})
+            return jsonify({
+                "success": False,
+                "message": "There is no Place for this student"
+            }), 400  # ✅ FIXED: Added status code
 
         return jsonify({
             "success": True,
             "message": "Student attendance added successfully",
             "data": response.json()
-        })
-
-
+        }), 200  # ✅ FIXED: Added status code
 
     except requests.exceptions.HTTPError as e:
+        socketio.emit('status', {'message': f'cant ass this user'}, namespace='/')
 
-        socketio.emit('status', {'message': f'HTTP Error: {str(e)}'}, namespace='/')
-
-    except requests.exceptions.HTTPError as e:
-        # ✅ FIXED: Use getattr to safely access response.status_code
-        status_code = getattr(e, 'response', None)
-        if status_code:
-            status_code = status_code.status_code
-        else:
-            status_code = 500
-
+        # ✅ FIXED: Added return statement
+        status_code = getattr(e.response, 'status_code', 500) if hasattr(e, 'response') else 500
         return jsonify({
             "success": False,
             "error": str(e),
@@ -562,7 +555,6 @@ def add_student_attendance():
         }), status_code
 
     except Exception as e:
-        # ✅ FIXED: Don't reference 'response' variable that might not exist
         return jsonify({
             "success": False,
             "error": str(e)
@@ -704,7 +696,7 @@ def delete_attendance_api(calander_id,user_id):
 
 
     except Exception as e:
-        print("DEBUG:Error {e} come from delete_attendance_api")
+        print(f"DEBUG:Error {e} come from delete_attendance_api")
         return jsonify({"status":"Error","Message":"error from delete_attendance_api"}),300
 
 
@@ -737,7 +729,7 @@ def get_data_account(calander_id):
         }
         response=requests.get(url,headers=headers,verify=False)
         response.raise_for_status()
-        print(response.json())
+
         if(response.status_code==200):
             return jsonify(response.json())
         else:
@@ -758,7 +750,7 @@ if __name__ == "__main__":
     start_background_tasks()
     socketio.run(app,
                 host="0.0.0.0",
-                port=5010,
+                port=5011,
                 debug=True,
                 ssl_context=('cert.pem', 'key.pem'),
                 allow_unsafe_werkzeug=True)

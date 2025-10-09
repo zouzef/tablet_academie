@@ -1,6 +1,6 @@
 <div class="col-lg-9" >
     <!-- Subject Attendance Section -->
-    <div class="card mt-3">
+    <div class="card mt-3" style="border:solid 1px lightgrey">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="card-title mb-0" style="color: rgb(48, 57, 114);">Subject Attendance</h5>
             <!-- Real-time connection status -->
@@ -32,34 +32,30 @@
                     <label class="form-label">Student</label>
                     <input type="text" class="form-control" id="studentSearch" placeholder="Search by Student ID or Name" style="border-color: #DDDDDD;">
                 </div>
-                <div class="col-md-6 d-flex justify-content-between align-items-center" style="padding-top: 20px;">
-                    <!-- Left-aligned button -->
-                    <button type="button" class="btn custom-btn" onclick="filterStudents()" style="background-color: rgb(90, 71, 207); color: white;">
-                        <i class="bi bi-search"></i> Search
-                    </button>
-                <style>
+                <div class="col-md-6 d-flex align-items-center" style="padding-top: 20px;">
+                        <button
+                            type="button"
+                            class="btn custom-btn ms-auto"
+                            style="background-color: rgb(90, 71, 207); color: white;"
+                            data-bs-toggle="modal"
+                            data-bs-target="#model-add-student"
+                            onclick="loadStudentList()">
+                            <i class="bi bi-person-plus"></i> Add student
 
-                .custom-btn:hover {
-                   opacity: 0.8;
-                    border-color: #5A4FCF;
-
-                }
-                </style>
-                    <!-- Right-aligned button -->
-                    <button
-                            type="button" class="btn custom-btn"
-                            style="background-color: rgb(90, 71, 207);
-                             color: white;"
-                             data-bs-toggle="modal" data-bs-target="#model-add-student">
-                        <i class="bi bi-person-plus"></i> Add student
-                    </button>
+                        </button>
+                    <style>
+                        .custom-btn:hover {
+                           opacity: 0.8;
+                           border-color: #5A4FCF;
+                        }
+                    </style>
                 </div>
             </form>
 
             <!-- Attendance Table -->
             <div class="table-responsive">
                 <table id="attendanceTable">
-                    <thead style="color: #4D44B5;">
+                    <thead style="background-color:black;color: #4D44B5;">
                         <tr>
                             <th>Delete</th>
                             <th>ID</th>
@@ -641,11 +637,11 @@ document.getElementById('model-add-note').addEventListener('hidden.bs.modal', fu
     };
 
 let currentCalendarId = null;
-function loadStudentList(calendarId) {
+function loadStudentList() {
     // Store the calendar ID for use in the event listener
-    currentCalendarId = calendarId;
+    currentCalendarId = sessionId;
 
-    fetch(`/slc/list-add-student-attendance/${calendarId}`)
+    fetch(`/slc/list-add-student-attendance/${sessionId}`)
     .then(res => {
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
@@ -764,8 +760,8 @@ function load_current_group(calendarId, userId) {
 
 
 
-// Example call (replace with your sessionId var)
-loadStudentList(sessionId);
+<!--// Example call (replace with your sessionId var)-->
+<!--loadStudentList(sessionId);-->
 
 </script>
 
@@ -979,6 +975,8 @@ $(document).ready(function () {
     #attendanceTable {
         width: 100%;
         border-collapse: collapse;
+
+
     }
 
     #attendanceTable th,
@@ -989,7 +987,7 @@ $(document).ready(function () {
     }
 
     #attendanceTable th {
-        background-color: #f8f9fa;
+        background-color: #CBD6E2;
         font-weight: 600;
     }
 
@@ -1002,6 +1000,7 @@ $(document).ready(function () {
     }
 
     .btn-note {
+
         background-color: #17a2b8;
         border-color: #17a2b8;
         color: white;
@@ -1090,7 +1089,6 @@ $(document).ready(function () {
         border-color: #6c757d;
     }
 </style>
-<!-- ADD THESE PAGINATION VARIABLES to your existing JavaScript (add at the top with other global variables) -->
 <script>
     var absent_students = 0;
     var present_students = 0;
@@ -1118,7 +1116,8 @@ $(document).ready(function () {
             });
 
     }
-    // REPLACE your existing renderAttendanceTable() function with this one
+
+
     function renderAttendanceTable() {
         const tbody = document.getElementById('attendanceBody');
         tbody.innerHTML = ""; // Clear old rows

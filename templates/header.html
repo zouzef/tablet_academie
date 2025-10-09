@@ -3,9 +3,9 @@
 <!-- ============================= -->
 <header class="top-header bg-white border-bottom">
     <div class="container-fluid">
-        <div class="d-flex justify-content-between align-items-center py-4">
+        <div class="d-flex justify-content-between align-items-center py-2">
             <div class="d-flex align-items-center">
-                <img src="" alt="Logo" width="70" height="65" id="academy-logo">
+                <img src="" alt="Logo" width="70" height="65" id="academy-logo" style="border-radius:10px">
             <h1 class="h2 mb-0" id="name-academie" style="padding-left: 5px;"></h1>
 
             </div>
@@ -25,7 +25,7 @@
                     <button class="btn btn-outline-secondary d-flex align-items-center" type="button"
                         style="background-color: rgb(253, 83, 83); color: white; border:none;"
                         onclick="getUnknownStudent()">
-                        <i class="fas fa-user-secret me-2"></i> Unknown Students
+                        <i class="fa-solid fa-circle-exclamation" style="padding-right:5px"></i> Unknown Students
                     </button>
                 </div>
 
@@ -182,6 +182,14 @@
     .btn-unknown:hover {
         background-color: #28a7468f;
     }
+
+    /*images style*/
+    #academy-logo{
+        border-raduis:50px;
+
+    }
+
+
 
     /* Table Styles */
     .table th {
